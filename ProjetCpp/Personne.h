@@ -25,7 +25,6 @@ public:
 	{
 		return mail;
 	}
-	void addToDataBase();
 
 
 protected:

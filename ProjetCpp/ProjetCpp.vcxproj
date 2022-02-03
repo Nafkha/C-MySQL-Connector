@@ -142,10 +142,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="databaseConnection.cpp" />
+    <ClCompile Include="Enseignant.cpp" />
+    <ClCompile Include="Etudiant.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Personne.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="databaseConnection.h" />
+    <ClInclude Include="Enseignant.h" />
+    <ClInclude Include="Etudiant.h" />
     <ClInclude Include="Personne.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
