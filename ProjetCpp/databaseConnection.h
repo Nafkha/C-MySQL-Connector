@@ -26,10 +26,7 @@ public:
 	static void ajouterMatiere(string idMat, string nomMat, double coefMat, int cnss);
 	static void setGM(string idGM,string idM);
 	static void ajouterGroupeModule(string idGM, string nomGM, double coefGM);
+	static void ajouterGroupe(string idGRP, string niveau, string diplome, string specialite, int num_g);
 	void createConnexion();
-	static void afficher()
-	{
-		cout << "Hello World !!!!!!";
-	}
 };
 

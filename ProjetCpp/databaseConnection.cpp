@@ -132,6 +132,28 @@ void databaseConnection::ajouterGroupeModule(string idGM, string nomGM, double c
 	}
 	delete pstmt;
 }
+void databaseConnection::ajouterGroupe(string idGRP, string niveau, string diplome, string specialite, int num_g)
+{
+	sql::PreparedStatement* pstmt;
+	pstmt = con->prepareStatement("INSERT INTO groupe (idGrp,niveau,diplome,specialite,num_g) values(?,?,?,?,?)");
+	pstmt->setString(1, idGRP);
+	pstmt->setString(2, niveau);
+	pstmt->setString(3, diplome);
+	pstmt->setString(4, specialite);
+	pstmt->setInt(5,num_g);
+	try
+	{
+		pstmt->execute();
+		cout << "Groupe ajoutee" << endl;
+		
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur d'insertion dans la table GROUPE  : " << e.what() << endl;
+	}
+	delete pstmt;
+}
+
 
 
 

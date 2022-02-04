@@ -145,6 +145,7 @@
     <ClCompile Include="databaseConnection.cpp" />
     <ClCompile Include="Enseignant.cpp" />
     <ClCompile Include="Etudiant.cpp" />
+    <ClCompile Include="Groupe.cpp" />
     <ClCompile Include="GroupeModule.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matiere.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="databaseConnection.h" />
     <ClInclude Include="Enseignant.h" />
     <ClInclude Include="Etudiant.h" />
+    <ClInclude Include="Groupe.h" />
     <ClInclude Include="GroupeModule.h" />
     <ClInclude Include="Matiere.h" />
     <ClInclude Include="Personne.h" />
