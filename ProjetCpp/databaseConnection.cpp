@@ -75,6 +75,65 @@ void databaseConnection::ajouterEtudiant(int id, string nom, string prenom, stri
 	
 
 }
+void databaseConnection::ajouterMatiere(string idMat, string nomMat, double coefMat, int cnss)
+{
+	sql::PreparedStatement* pstmt;
+	
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement("INSERT INTO matiere(idMat,nomMat,coef,ens) values(?,?,?,?)");
+	pstmt->setString(1, idMat);
+	pstmt->setString(2, nomMat);
+	pstmt->setDouble(3, coefMat);
+	pstmt->setInt(4, cnss);
+	try
+	{
+		pstmt->execute();
+		cout << "Une nouvelle matiere ajoutee" << endl;
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur : " << e.what() << endl;
+	}
+	delete pstmt;
+
+}
+void databaseConnection::setGM(string idGM, string idM)
+{
+	sql::PreparedStatement* pstmt;
+	pstmt = con->prepareStatement("UPDATE Matiere set gm=? where idMat = ?");
+	pstmt->setString(1, idGM);
+	pstmt->setString(2, idM);
+	try
+	{
+		pstmt->execute();
+		cout << "Matiere ajoutee au groupe avec success" << endl;
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur d'execution" << endl;
+	}
+	delete pstmt;
+}
+void databaseConnection::ajouterGroupeModule(string idGM, string nomGM, double coefGM)
+{
+	sql::PreparedStatement* pstmt;
+	pstmt = con->prepareStatement("INSERT INTO groupeModule(idGM,nomGM,coefGM) values(?,?,?)");
+	pstmt->setString(1, idGM);
+	pstmt->setString(2, nomGM);
+	pstmt->setDouble(3, coefGM);
+	try
+	{
+		pstmt->execute();
+		cout << "Groupe module ajoutee aveec succes" << endl;
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur  : " << e.what() << endl;
+	}
+	delete pstmt;
+}
+
+
 
 
 

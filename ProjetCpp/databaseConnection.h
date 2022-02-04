@@ -23,6 +23,9 @@ public:
 	}
  	static void  ajouterEtudiant(int id, string nom, string prenom, string mail, int num_insc);
 	static void ajouterEnseignant(int id, string nom, string prenom, string mail, int cnss);
+	static void ajouterMatiere(string idMat, string nomMat, double coefMat, int cnss);
+	static void setGM(string idGM,string idM);
+	static void ajouterGroupeModule(string idGM, string nomGM, double coefGM);
 	void createConnexion();
 	static void afficher()
 	{

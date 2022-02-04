@@ -1,0 +1,1 @@
+#include "GroupeModule.h"
