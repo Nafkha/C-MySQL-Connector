@@ -9,14 +9,16 @@ private:
 	string nomMat;
 	double coef;
 	Enseignant ens;
+	int nbNotes;
 public:
-	Matiere(string id_mat, string nom_mat, double coef, Enseignant ens)
+	Matiere(string id_mat, string nom_mat, double coef, Enseignant ens,int nbNotes)
 		: idMat(id_mat),
 		  nomMat(nom_mat),
 		  coef(coef),
-		  ens(ens)
+		  ens(ens),
+		  nbNotes(nbNotes)
 	{
-		databaseConnection::ajouterMatiere(idMat, nomMat, coef, ens.get_cnss());
+		databaseConnection::ajouterMatiere(idMat, nomMat, coef, ens.get_cnss(),nbNotes);
 	}
 
 	string get_id_mat() const
@@ -57,6 +59,10 @@ public:
 	void set_ens(const Enseignant& ens)
 	{
 		this->ens = ens;
+	}
+	int get_nbNotes() const
+	{
+		return  nbNotes;
 	}
 };
 

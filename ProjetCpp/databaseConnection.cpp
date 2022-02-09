@@ -8,7 +8,7 @@ void databaseConnection::createConnexion()
 	{
 		driver = get_driver_instance();
 		con = driver->connect(server, username, password);
-		cout << "Serveur BD : " << server << " Connected as " << username << endl;
+		//cout << "Serveur BD : " << server << " Connected as " << username << endl;
 	}
 	catch (sql::SQLException e)
 	{
@@ -75,16 +75,17 @@ void databaseConnection::ajouterEtudiant(int id, string nom, string prenom, stri
 	
 
 }
-void databaseConnection::ajouterMatiere(string idMat, string nomMat, double coefMat, int cnss)
+void databaseConnection::ajouterMatiere(string idMat, string nomMat, double coefMat, int cnss,int nbnotes)
 {
 	sql::PreparedStatement* pstmt;
 	
 	con->setSchema("projetcpp");
-	pstmt = con->prepareStatement("INSERT INTO matiere(idMat,nomMat,coef,ens) values(?,?,?,?)");
+	pstmt = con->prepareStatement("INSERT INTO matiere(idMat,nomMat,coef,ens,nbnotes) values(?,?,?,?,?)");
 	pstmt->setString(1, idMat);
 	pstmt->setString(2, nomMat);
 	pstmt->setDouble(3, coefMat);
 	pstmt->setInt(4, cnss);
+	pstmt->setInt(5, nbnotes);
 	try
 	{
 		pstmt->execute();
@@ -117,6 +118,7 @@ void databaseConnection::setGM(string idGM, string idM)
 void databaseConnection::ajouterGroupeModule(string idGM, string nomGM, double coefGM)
 {
 	sql::PreparedStatement* pstmt;
+
 	pstmt = con->prepareStatement("INSERT INTO groupeModule(idGM,nomGM,coefGM) values(?,?,?)");
 	pstmt->setString(1, idGM);
 	pstmt->setString(2, nomGM);
@@ -153,6 +155,91 @@ void databaseConnection::ajouterGroupe(string idGRP, string niveau, string diplo
 	}
 	delete pstmt;
 }
+sql::ResultSet* databaseConnection::fetchGroup()
+{
+	sql::ResultSet* rs;
+	sql::Statement* stmt;
+	sql::PreparedStatement *pstmt;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement("SELECT * FROM groupe where idGrp = ?");
+	pstmt->setString(1, "IRM");
+	try{
+		rs = pstmt->executeQuery();
+	cout << "SUCCESS"<<endl;
+	}catch (sql::SQLException e)
+	{
+		cout << "Erreur : " << e.what() << endl;
+		exit(1);
+	}
+	delete pstmt;
+	return rs;
+
+}
+sql::ResultSet* databaseConnection::fetchNotes(string idMat)
+{
+	sql::ResultSet* rs;
+	sql::PreparedStatement* pstmt;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement("SELECT * FROM NOTE WHERE mat=?");
+	pstmt->setString(1, idMat);
+	try
+	{
+		rs = pstmt->executeQuery();
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur : " << e.what() << endl;
+		exit(1);
+	}
+	delete pstmt;
+	return rs;
+
+}
+sql::ResultSet* databaseConnection::fetchEtudiants(int id)
+{
+	sql::ResultSet* rs;
+	sql::PreparedStatement* pstmt;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement("SELECT * FROM ETUDIANT INNER JOIN PERSONNE ON (PERSONNE.id = ETUDIANT.id && PERSONNE.id = ?)");
+	pstmt->setInt(1, id);
+	try
+	{
+		rs = pstmt->executeQuery();
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur :  " << e.what() << endl;
+		exit(1);
+	}
+}
+void databaseConnection::ajouterNote(int idEtu, string idMat, double note, string type)
+{
+	cout << "Ajout de note" << endl;
+	sql::PreparedStatement* pstmt;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement("INSERT INTO NOTE(Mat,Etu,Note,Type) values(?,?,?,?)");
+	pstmt->setInt(2, idEtu);
+	pstmt->setString(1, idMat);
+	pstmt->setDouble(3, note);
+	pstmt->setString(4, type);
+	try
+	{
+		pstmt->execute();
+		cout << "Note ajoutée" << endl;
+		
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur :  " << e.what() << endl;
+	}
+	delete pstmt;
+
+
+
+}
+
+
+
 
 
 
