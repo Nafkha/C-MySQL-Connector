@@ -57,10 +57,7 @@ public:
 	{
 		return listeMat;
 	}
-	/*vector<Note> get_liste_notes() const
-	{
-		return  lisetNote;
-	}*/
+
 	void ajouterMatiereGM(Matiere m)
 	{
 			databaseConnection::setGM(idGM, m.get_id_mat());
@@ -85,49 +82,13 @@ public:
 				
 			}
 		}
-		for(int i=0;i<listeNote.size();i++)
-		{
-			cout << "Nom : " << listeNote.at(i).get_etu().get_nom() << " Note : " << listeNote.at(i).get_note() << endl;
-		}
+	
 	}
-	/*void getNotes()
+	vector<Note> get_liste_note()
 	{
-		sql::ResultSet* rs;
-		Note nt;
-		
-		
-		cout << listeMat.size() << endl;
-		//cout << listeMat.at(0).get_id_mat() << endl;
-		/*for (int i = 0;i<listeMat.size();i++)
-		{
-			rs= databaseConnection::fetchNotes(listeMat.at(i).get_id_mat());
-			while (rs->next())
-			{
-				Etudiant e;
-				//sql::ResultSet* et;
-				//et = databaseConnection::fetchEtudiants(rs->getInt("Etu"));
-				//e.set_id(et->getInt("id"));
-				//e.set_num_insc(et->getInt("num_insc"));
-				//e.set_nom(et->getString("nom"));
-				//e.set_prenom(et->getString("prenom"));
-				//e.set_mail(et->getString("mail"));
-
-
-				//nt.set_etu(e);
-				//nt.set_mat(listeMat.at(i));
-				//nt.set_note(rs->getDouble("Note"));
-				//
-				//nt.set_type(rs->getString("Type"));
-				//lisetNote.push_back(nt);
-				cout << "Hello" << endl;
-
-
-			}
-			cout << i << endl;
-		}
-		cout << "HELLO WORLD" << endl;
-		
-	}*/
+		return listeNote;
+	}
+	
 
 };
 

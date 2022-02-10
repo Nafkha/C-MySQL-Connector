@@ -142,7 +142,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="a.cpp" />
     <ClCompile Include="databaseConnection.cpp" />
     <ClCompile Include="Enseignant.cpp" />
     <ClCompile Include="Etudiant.cpp" />
@@ -152,14 +151,15 @@
     <ClCompile Include="Matiere.cpp" />
     <ClCompile Include="Note.cpp" />
     <ClCompile Include="Personne.cpp" />
+    <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="a.h" />
     <ClInclude Include="databaseConnection.h" />
     <ClInclude Include="Enseignant.h" />
     <ClInclude Include="Etudiant.h" />
     <ClInclude Include="Groupe.h" />
     <ClInclude Include="GroupeModule.h" />
+    <ClInclude Include="Header.h" />
     <ClInclude Include="Matiere.h" />
     <ClInclude Include="Note.h" />
     <ClInclude Include="Personne.h" />
