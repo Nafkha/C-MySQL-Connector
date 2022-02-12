@@ -74,22 +74,6 @@ public:
 	{
 		this->num_g = num_g;
 	}
-	static void fetchgroup()
-	{
-		sql::ResultSet* rs = databaseConnection::fetchGroup();
-		Groupe gp;
-		while(rs->next())
-		{
-			cout << rs->getString("idGrp") <<" " << rs->getString("diplome") << endl;
-		}
-		
-		/*
-		gp.set_id_grp(rs->getString(1));
-		gp.set_niveau(rs->getString(2));
-		gp.set_diplome(rs->getString(3));
-		gp.set_specialite(rs->getString(4));
-		gp.set_num_g(rs->getInt(5));
-		cout << gp.get_id_grp() << " " << gp.get_diplome() << endl;*/
-	}
+
 }; 
 

@@ -118,6 +118,7 @@ void databaseConnection::setGM(string idGM, string idM)
 void databaseConnection::ajouterGroupeModule(string idGM, string nomGM, double coefGM)
 {
 	sql::PreparedStatement* pstmt;
+	con->setSchema("projetcpp");
 
 	pstmt = con->prepareStatement("INSERT INTO groupeModule(idGM,nomGM,coefGM) values(?,?,?)");
 	pstmt->setString(1, idGM);
@@ -137,12 +138,14 @@ void databaseConnection::ajouterGroupeModule(string idGM, string nomGM, double c
 void databaseConnection::ajouterGroupe(string idGRP, string niveau, string diplome, string specialite, int num_g)
 {
 	sql::PreparedStatement* pstmt;
+	con->setSchema("projetcpp");
 	pstmt = con->prepareStatement("INSERT INTO groupe (idGrp,niveau,diplome,specialite,num_g) values(?,?,?,?,?)");
 	pstmt->setString(1, idGRP);
 	pstmt->setString(2, niveau);
 	pstmt->setString(3, diplome);
 	pstmt->setString(4, specialite);
 	pstmt->setInt(5,num_g);
+	cout << "Hello" << endl;
 	try
 	{
 		pstmt->execute();
@@ -158,7 +161,6 @@ void databaseConnection::ajouterGroupe(string idGRP, string niveau, string diplo
 sql::ResultSet* databaseConnection::fetchGroup()
 {
 	sql::ResultSet* rs;
-	sql::Statement* stmt;
 	sql::PreparedStatement *pstmt;
 	con->setSchema("projetcpp");
 	pstmt = con->prepareStatement("SELECT * FROM groupe where idGrp = ?");
@@ -212,6 +214,63 @@ sql::ResultSet* databaseConnection::fetchEtudiants(int id)
 		exit(1);
 	}
 }
+sql::ResultSet* databaseConnection::listeEtudiants()
+{
+	sql::ResultSet* rs;
+	sql::PreparedStatement* pstmt;
+	sql::Statement* stmt;
+
+	con->setSchema("projetcpp");
+	stmt = con->createStatement();
+	try
+	{
+		rs = stmt->executeQuery("SELECT * FROM ETUDIANT INNER JOIN PERSONNE ON (PERSONNE.id = ETUDIANT.id)");
+		return rs;
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur :  " << e.what() << endl;
+		exit(1);
+	}
+}
+sql::ResultSet* databaseConnection::listeEnseignants()
+{
+	sql::ResultSet* rs;
+	sql::PreparedStatement* pstmt;
+	sql::Statement* stmt;
+
+	con->setSchema("projetcpp");
+	stmt = con->createStatement();
+	try
+	{
+		rs = stmt->executeQuery("SELECT * FROM ENSEIGNANT INNER JOIN PERSONNE ON (PERSONNE.id = ENSEIGNANT.id)");
+		return rs;
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur :  " << e.what() << endl;
+		exit(1);
+	}
+}
+sql::ResultSet* databaseConnection::listeGroupes()
+{
+	sql::ResultSet* rs;
+	sql::PreparedStatement* pstmt;
+	sql::Statement* stmt;
+
+	con->setSchema("projetcpp");
+	stmt = con->createStatement();
+	try
+	{
+		rs = stmt->executeQuery("SELECT * FROM GROUPE");
+		return rs;
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur :  " << e.what() << endl;
+		exit(1);
+	}
+}
 void databaseConnection::ajouterNote(int idEtu, string idMat, double note, string type)
 {
 	cout << "Ajout de note" << endl;
@@ -237,6 +296,44 @@ void databaseConnection::ajouterNote(int idEtu, string idMat, double note, strin
 
 
 }
+void databaseConnection::deleteStudent(int id)
+{
+	sql::PreparedStatement* pstmt;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement("Delete from personne where id=?");
+	pstmt->setInt(1, id);
+	try
+	{
+		pstmt->execute();
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur de supression : " << e.what() << endl;
+	}
+	delete pstmt;
+	
+}
+sql::ResultSet* databaseConnection::listeGroupesModules()
+{
+	sql::Statement* stmt;
+	con->setSchema("projetcpp");
+	stmt = con->createStatement();
+	try
+	{
+		sql::ResultSet*rs = stmt->executeQuery("SELECT * FROM GROUPEMODULE;");
+		return rs;
+
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur : " << e.what() << endl;
+	}
+
+	cout << "aaa" << endl;
+	delete stmt;
+}
+
+
 
 
 

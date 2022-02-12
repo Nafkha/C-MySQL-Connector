@@ -6,10 +6,11 @@ class Enseignant:public Personne
 private:
 	int cnss;
 public:
-	Enseignant(int id, const string& nom, const string& prenom, const string& mail, int cnss)
+	Enseignant(int id, const string& nom, const string& prenom, const string& mail, int cnss,bool addToDb)
 		: Personne(id, nom, prenom, mail),
 		  cnss(cnss)
 	{
+		if(addToDb)
 		databaseConnection::ajouterEnseignant(id, nom, prenom, mail, cnss);
 	}
 

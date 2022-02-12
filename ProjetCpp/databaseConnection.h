@@ -30,8 +30,12 @@ public:
 	static void ajouterNote(int idEtu, string idMat, double note, string type);
 	static sql::ResultSet* fetchGroup();
 	static sql::ResultSet* fetchNotes(string idMat);
-
+	static sql::ResultSet* listeEtudiants();
+	static sql::ResultSet* listeGroupes();
 	static sql::ResultSet* fetchEtudiants(int id);
+	static void deleteStudent(int id);
 	void createConnexion();
+	static sql::ResultSet* listeEnseignants();
+	static sql::ResultSet* listeGroupesModules();
 };
 

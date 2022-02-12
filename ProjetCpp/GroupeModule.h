@@ -11,7 +11,6 @@ private:
 	string nomGM;
 	double coefGM;
 	vector<Matiere> listeMat;
-	//vector<Note> lisetNote;
 	vector<Note> listeNote;
 
 public:
@@ -21,6 +20,8 @@ public:
 		  coefGM(coef_gm)
 	{
 		databaseConnection::ajouterGroupeModule(idGM, nomGM, coefGM);
+		cout << "GM" << endl;
+
 	}
 
 	string get_id_gm() const
