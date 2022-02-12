@@ -1,10 +1,7 @@
 #include "Header.h"
 
 vector<Groupe> listeGrp();
-void afficher()
-{
-	cout << "Hello World !!!" << endl;
-}
+
 void creationEtudiant()
 {
 	int id, num_insc;
@@ -122,5 +119,34 @@ void afficherListeGroupeModule()
 		cout << setprecision(0) << setw(colwidth) << rs->getString("idGM")
 			<< setprecision(4) << setw(colwidth) << rs->getString("nomGM")
 			<< setprecision(4) <<setw(colwidth) << rs->getDouble("coefGM") << endl;
+	}
+}
+void remplirGroupe()
+{
+	sql::ResultSet* rs;
+	rs = databaseConnection::listeGroupes();
+	vector<Groupe> listeGrp;
+	while(rs->next())
+	{
+		Groupe gp;
+		gp.set_id_grp(rs->getString("idGrp"));
+		gp.set_niveau(rs->getString("niveau"));
+		gp.set_diplome(rs->getString("diplome"));
+		gp.set_specialite(rs->getString("specialite"));
+		gp.set_num_g(rs->getInt("num_g"));
+		listeGrp.push_back(gp);
+	}
+	for(int i=0;i<listeGrp.size();i++)
+	{
+		sql::ResultSet* letu = databaseConnection::fetchEtudiants(listeGrp.at(i).get_id_grp());
+		while(letu->next())
+		{
+			Etudiant e(letu->getInt("id"), letu->getString("nom"), letu->getString("prenom"), letu->getString("mail"), letu->getInt("num_insc"), false);
+			listeGrp.at(i).addEtu(e);
+		}
+	}
+	for(int i=0;i<listeGrp.size();i++)
+	{
+		listeGrp.at(i).testAfficherEtudiants();
 	}
 }

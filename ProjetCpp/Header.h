@@ -9,7 +9,6 @@
 #include "databaseConnection.h"
 #include "iomanip"
 using namespace std;
-void afficher();
 void creationEtudiant();
 void afficherListeEtudiants();
 void supprimerEtudiant();
@@ -19,3 +18,4 @@ void creationEnseignant();
 void afficherListeEnseignant();
 void creationGroupeModule();
 void afficherListeGroupeModule();
+void remplirGroupe();

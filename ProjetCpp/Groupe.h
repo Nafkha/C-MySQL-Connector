@@ -74,6 +74,18 @@ public:
 	{
 		this->num_g = num_g;
 	}
+	void addEtu(Etudiant e)
+	{
+		listeEtudiants.push_back(e);
+	}
+
+	void testAfficherEtudiants()
+	{
+		for(int i=0;i<listeEtudiants.size();i++)
+		{
+			cout << "Nom : " << listeEtudiants.at(i).get_nom() << endl;
+		}
+	}
 
 }; 
 

@@ -32,7 +32,7 @@ public:
 	static sql::ResultSet* fetchNotes(string idMat);
 	static sql::ResultSet* listeEtudiants();
 	static sql::ResultSet* listeGroupes();
-	static sql::ResultSet* fetchEtudiants(int id);
+	static sql::ResultSet* fetchEtudiants(string id);
 	static void deleteStudent(int id);
 	void createConnexion();
 	static sql::ResultSet* listeEnseignants();

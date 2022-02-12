@@ -65,7 +65,7 @@ public:
 			listeMat.push_back(m);
 		
 	}
-	void getNotes()
+	/*void getNotes()
 	{
 		sql::ResultSet* rs;
 		for(int i = 0;i<listeMat.size();i++)
@@ -84,7 +84,7 @@ public:
 			}
 		}
 	
-	}
+	}*/
 	vector<Note> get_liste_note()
 	{
 		return listeNote;

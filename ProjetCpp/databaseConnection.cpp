@@ -197,13 +197,13 @@ sql::ResultSet* databaseConnection::fetchNotes(string idMat)
 	return rs;
 
 }
-sql::ResultSet* databaseConnection::fetchEtudiants(int id)
+sql::ResultSet* databaseConnection::fetchEtudiants(string id)
 {
 	sql::ResultSet* rs;
 	sql::PreparedStatement* pstmt;
 	con->setSchema("projetcpp");
-	pstmt = con->prepareStatement("SELECT * FROM ETUDIANT INNER JOIN PERSONNE ON (PERSONNE.id = ETUDIANT.id && PERSONNE.id = ?)");
-	pstmt->setInt(1, id);
+	pstmt = con->prepareStatement("SELECT personne.id,num_insc,nom,prenom,grp,mail FROM ETUDIANT  JOIN PERSONNE ON (PERSONNE.id = ETUDIANT.id) having(grp=?)");
+	pstmt->setString(1, id);
 	try
 	{
 		rs = pstmt->executeQuery();
