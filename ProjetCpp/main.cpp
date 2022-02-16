@@ -14,7 +14,7 @@ const string server = "localhost:3306";
 const string username = "root";
 const string password = "admin";
 
-/*int main()
+int main()
 {
 	databaseConnection db(server, username, password);
 	db.createConnexion();
@@ -45,7 +45,10 @@ const string password = "admin";
 		goto Menu_Enseignant;
 	case 4 :
 		goto Menu_GroupeModule;
-		
+	case 5:
+		goto  Menu_Matieres;
+	case 6:
+		goto  Menu_Note;
 	}
 	Menu_Groupe:
 	cout << "1-Ajouter un groupe" << endl;
@@ -64,10 +67,11 @@ const string password = "admin";
 		creationGroupe();
 		goto Menu_Groupe;
 	case 2:
-		afficherListeGroupe();
+		//afficherListeGroupe();
+		remplirGroupe();
 		goto Menu_Groupe;
 	case 3:
-		exit(0);
+		goto Menu_Principale;;
 	}
 
 	Menu_Etudiants:
@@ -134,7 +138,7 @@ const string password = "admin";
 		creationGroupeModule();
 		goto Menu_GroupeModule;
 	case 2:
-		afficherListeGroupeModule();
+	//	afficherListeGroupeModule();
 		goto Menu_GroupeModule;
 	case 3:
 		cout << "Supprimer Groupe module" << endl;
@@ -142,15 +146,32 @@ const string password = "admin";
 		
 
 	}
+	Menu_Matieres:
+	cout << "1-Ajouter une matiere " << endl;
+	do
+	{
+		cout << "Donner votre choix" << endl;
+		cin >> choice;
+	} while (choice != 1);
+	switch (choice)
+	{
+	case 1 :
+		creationMatiere();
+	}
+	Menu_Note:
+	cout << "1-Ajouter une Note " << endl;
+	do
+	{
+		cout << "Donner votre choix" << endl;
+		cin >> choice;
+	} while (choice != 1);
+	switch (choice)
+	{
+	case 1:
+		addNote();
+	}
 
 
 
 
-}*/
-int main()
-{
-	databaseConnection db(server, username, password);
-	db.createConnexion();
-	remplirGroupe();
-	
 }

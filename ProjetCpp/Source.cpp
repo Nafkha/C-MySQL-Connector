@@ -5,7 +5,7 @@ vector<Groupe> listeGrp();
 void creationEtudiant()
 {
 	int id, num_insc;
-	string nom, prenom, mail;
+	string nom, prenom, mail,idGRP;
 	cout << "ID : ";
 	cin >> id;
 	cout << "Nom : ";
@@ -17,7 +17,10 @@ void creationEtudiant()
 	cin >> mail;
 	cout << "Numero d'inscription : ";
 	cin >> num_insc;
-	Etudiant e(id, nom, prenom, mail, num_insc, true);
+	cout << "GROUPE :";
+	cin >> idGRP;
+	cout << "aaaa" << endl;
+	Etudiant e(id, nom, prenom, mail, num_insc,idGRP, true);
 }
 void afficherListeEtudiants()
 {
@@ -98,29 +101,52 @@ void afficherListeEnseignant()
 }
 void creationGroupeModule()
 {
-	string id, nom;
+	string id, nom,gp;
 	double coef;
 	cout << "ID : ";
 	cin.ignore();
 	getline(cin, id);
 	cout << "Nom Groupe module : ";
 	getline(cin, nom);
-	cout << "ID : ";
+	cout << "Donner la coeffecient : ";
 	cin >> coef;
-	GroupeModule gm(id, nom, coef);
+	cout << "Donner le groupe : " << endl;
+	cin.ignore();
+
+	getline(cin, gp);
+	GroupeModule gm(id, nom, coef,gp);
 }
-void afficherListeGroupeModule()
+void creationMatiere()
 {
-	int colwidth = 20;
-	sql::ResultSet* rs = databaseConnection::listeGroupesModules();
-	cout << setw(colwidth) << "ID" << setw(colwidth) << "Nom" << setw(colwidth) << "Coef" << setw(colwidth) << endl;
-	while(rs->next())
+	int ens;
+	string id, nom,gm;
+	double coef;
+	int nb_notes;
+	cout << "Donner l'ID de matiere : ";
+	cin.ignore();
+	getline(cin, id);
+	cout << "Donner le nom de la matiere : ";
+	getline(cin, nom);
+	cout << "Donner le groupe module de la matiere : ";
+	getline(cin, gm);
+	cout << "Donner la coeffecience : ";
+	cin >> coef;
+	cout << "Donner l'ID de l'enseignant : ";
+	cin >> ens;
+	sql::ResultSet* rs = databaseConnection::fetchEnseignant(ens);
+	while (rs->next())
 	{
-		cout << setprecision(0) << setw(colwidth) << rs->getString("idGM")
-			<< setprecision(4) << setw(colwidth) << rs->getString("nomGM")
-			<< setprecision(4) <<setw(colwidth) << rs->getDouble("coefGM") << endl;
+		Enseignant e(rs->getInt("id"), rs->getString("nom"), rs->getString("prenom"), rs->getString("mail"), rs->getInt("cnss"), false);
+		do {
+			cout << "Donner le nombre de notes : ";
+			cin >> nb_notes;
+		} while (nb_notes < 1 || nb_notes>3);
+		Matiere m(id, nom, gm, coef, e, nb_notes, true);
+
 	}
+	
 }
+
 void remplirGroupe()
 {
 	sql::ResultSet* rs;
@@ -141,12 +167,124 @@ void remplirGroupe()
 		sql::ResultSet* letu = databaseConnection::fetchEtudiants(listeGrp.at(i).get_id_grp());
 		while(letu->next())
 		{
-			Etudiant e(letu->getInt("id"), letu->getString("nom"), letu->getString("prenom"), letu->getString("mail"), letu->getInt("num_insc"), false);
+			Etudiant e(letu->getInt("id"), letu->getString("nom"), letu->getString("prenom"), letu->getString("mail"), letu->getInt("num_insc"),letu->getString("grp"), false);
 			listeGrp.at(i).addEtu(e);
 		}
 	}
 	for(int i=0;i<listeGrp.size();i++)
 	{
+		sql::ResultSet* lGM = databaseConnection::listeGroupesModules(listeGrp.at(i).get_id_grp());
+		while(lGM->next())
+		{
+			GroupeModule gm;
+			gm.set_id_gm(lGM->getString("idGM"));
+			gm.set_nom_gm(lGM->getString("nomGM"));
+			gm.set_coef_gm(lGM->getDouble("coefGM"));
+			listeGrp.at(i).addGM(gm);
+			
+		}
+		
+	}
+	/*---- TEST AFFICHAGE ----*/
+	for (int i = 0;i<listeGrp.size();i++)
+	{
 		listeGrp.at(i).testAfficherEtudiants();
 	}
+	cout << "Modules : " << endl;
+	for(int i=0;i<listeGrp.size();i++)
+	{
+		for(int j=0;j<listeGrp.at(i).get_groupe_module().size();j++)
+		{
+			remplirGroupeModule(listeGrp.at(i).get_groupe_module().at(j));
+			cout << listeGrp.at(i).get_groupe_module().at(j).get_nom_gm() << endl;
+		}
+
+	}
+}
+void remplirGroupeModule(GroupeModule gm)
+{
+	sql::ResultSet* rs = databaseConnection::fetchMatieres(gm.get_id_gm());
+	while(rs->next())
+	{
+		sql::ResultSet* lEn = databaseConnection::fetchEnseignant(rs->getInt("ens"));
+		while (lEn->next()) {
+			Enseignant e(lEn->getInt("id"), lEn->getString("nom"), lEn->getString("prenom"), lEn->getString("mail"), lEn->getInt("cnss"), false);
+
+
+			Matiere m(rs->getString("idMat"), rs->getString("nomMat"),rs->getString("gm"), rs->getDouble("coef"), e, rs->getInt("nbnotes"), false);
+			gm.ajouterMatiere(m);
+		}
+	}
+}
+void addNote()
+{
+	int idEtu;
+	string idMat, type;
+	double note;
+	sql::ResultSet* etu;
+	cout << "Donner l'ID de l'etudiant : ";
+	cin >> idEtu;
+	etu = databaseConnection::fetchEtudiantById(idEtu);
+	while(etu->next())
+	{
+		Etudiant e(etu->getInt("id"), etu->getString("nom"), etu->getString("prenom"), etu->getString("mail"), etu->getInt("num_insc"));
+		cout << "Donner l'ID de la matiere : ";
+		cin.ignore();
+		getline(cin, idMat);
+		sql::ResultSet* mat = databaseConnection::fetchMatierById(idMat);
+		while(mat->next())
+		{
+			int x = mat->getInt("nbnotes");
+			switch (x)
+			{
+			case 1:
+				do
+				{
+					cout << "Donner la note d'examen :";
+					cin >> note;
+				} while (note < 0 || note>20);
+				databaseConnection::ajouterNote(e.get_num_insc(), mat->getString("idMat"), note, "Examen");
+				break;
+			case 2:
+				do
+				{
+					cout << "Donner la note de ds :";
+					cin >>note;
+				} while (note < 0 || note>20);
+				databaseConnection::ajouterNote(e.get_num_insc(), mat->getString("idMat"), note, "DS");
+				do
+				{
+					cout << "Donner la note d'examen :";
+					cin >>note;
+				} while (note < 0 || note>20);
+				databaseConnection::ajouterNote(e.get_num_insc(), mat->getString("idMat"), note, "Examen");
+				break;
+				case 3:
+				do
+				{
+					cout << "Donner la note de ds :";
+					cin >>note;
+				} while (note < 0 || note>20);
+				databaseConnection::ajouterNote(e.get_num_insc(), mat->getString("idMat"), note, "DS");		do
+				{
+					cout << "Donner la note de TP :";
+					cin >>note;
+				} while (note < 0 || note>20);
+				databaseConnection::ajouterNote(e.get_num_insc(), mat->getString("idMat"), note, "TP");
+				do
+				{
+					cout << "Donner la note d'examen :";
+					cin >>note;
+				} while (note < 0 || note>20);
+				databaseConnection::ajouterNote(e.get_num_insc(), mat->getString("idMat"), note, "Examen");
+				break;
+
+			}
+		}
+	}
+
+
+		
+	
+	
 }

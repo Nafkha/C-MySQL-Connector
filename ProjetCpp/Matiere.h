@@ -11,14 +11,15 @@ private:
 	Enseignant ens;
 	int nbNotes;
 public:
-	Matiere(string id_mat, string nom_mat, double coef, Enseignant ens,int nbNotes)
+	Matiere(string id_mat, string nom_mat,string gm, double coef, Enseignant ens,int nbNotes,bool addToDb)
 		: idMat(id_mat),
 		  nomMat(nom_mat),
 		  coef(coef),
 		  ens(ens),
 		  nbNotes(nbNotes)
 	{
-		databaseConnection::ajouterMatiere(idMat, nomMat, coef, ens.get_cnss(),nbNotes);
+		if(addToDb)
+		databaseConnection::ajouterMatiere(idMat, nomMat,gm, coef, ens.get_cnss(),nbNotes);
 	}
 
 	string get_id_mat() const

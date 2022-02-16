@@ -9,13 +9,17 @@
 #include "databaseConnection.h"
 #include "iomanip"
 using namespace std;
-void creationEtudiant();
-void afficherListeEtudiants();
+void creationEtudiant(); //Créer un étudiant;
+void afficherListeEtudiants(); 
 void supprimerEtudiant();
-void creationGroupe();
+void creationGroupe(); // Créer un groupe
 void afficherListeGroupe();
-void creationEnseignant();
+void creationEnseignant(); //Créer un enseignant
 void afficherListeEnseignant();
-void creationGroupeModule();
+void creationGroupeModule(); //Créer un Groupe Module
 void afficherListeGroupeModule();
+void creationMatiere();
+void addNote();
+//Obtenir les données de la BD
 void remplirGroupe();
+void remplirGroupeModule(GroupeModule gm);

@@ -8,13 +8,19 @@ private:
 	int num_insc;
 public:
 	Etudiant() = delete;
-	Etudiant(int id, const string& nom, const string& prenom, const string& mail, int num_insc,bool addToDb)
+	Etudiant(int id, const string& nom, const string& prenom, const string& mail, int num_insc,string idGRP,bool addToDb)
 		: Personne(id, nom, prenom, mail),
 		  num_insc(num_insc)
 	{
 		//databaseConnection::afficher();
 		if(addToDb)
-		databaseConnection::ajouterEtudiant(id, nom, prenom, mail, num_insc);
+		databaseConnection::ajouterEtudiant(id, nom, prenom, mail, num_insc,idGRP);
+	}
+	Etudiant(int id, const string& nom, const string& prenom, const string& mail, int num_insc)
+		: Personne(id, nom, prenom, mail),
+		  num_insc(num_insc)
+	{
+	
 	}
 
 	void set_num_insc(int num_insc)

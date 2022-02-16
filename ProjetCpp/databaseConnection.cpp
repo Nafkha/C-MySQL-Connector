@@ -42,7 +42,7 @@ void databaseConnection::ajouterEnseignant(int id, string nom, string prenom, st
 	}
 }
 
-void databaseConnection::ajouterEtudiant(int id, string nom, string prenom, string mail, int num_insc)
+void databaseConnection::ajouterEtudiant(int id, string nom, string prenom, string mail, int num_insc,string idGRP)
 {
 	sql::PreparedStatement* pstmt;
 	sql::PreparedStatement* eAdd;
@@ -52,9 +52,10 @@ void databaseConnection::ajouterEtudiant(int id, string nom, string prenom, stri
 	pstmt->setString(2, nom);
 	pstmt->setString(3, prenom);
 	pstmt->setString(4, mail);
-	eAdd = con->prepareStatement("INSERT INTO etudiant(num_insc,id) values(?,?)");
+	eAdd = con->prepareStatement("INSERT INTO etudiant(num_insc,id,grp) values(?,?,?)");
 	eAdd->setInt(1, num_insc);
 	eAdd->setInt(2, id);
+	eAdd->setString(3, idGRP);
 
 
 	try
@@ -75,21 +76,21 @@ void databaseConnection::ajouterEtudiant(int id, string nom, string prenom, stri
 	
 
 }
-void databaseConnection::ajouterMatiere(string idMat, string nomMat, double coefMat, int cnss,int nbnotes)
+void databaseConnection::ajouterMatiere(string idMat, string nomMat,string gm, double coefMat, int cnss,int nbnotes)
 {
 	sql::PreparedStatement* pstmt;
 	
 	con->setSchema("projetcpp");
-	pstmt = con->prepareStatement("INSERT INTO matiere(idMat,nomMat,coef,ens,nbnotes) values(?,?,?,?,?)");
+	pstmt = con->prepareStatement("INSERT INTO matiere(idMat,nomMat,coef,ens,gm,nbnotes) values(?,?,?,?,?,?)");
 	pstmt->setString(1, idMat);
 	pstmt->setString(2, nomMat);
 	pstmt->setDouble(3, coefMat);
 	pstmt->setInt(4, cnss);
-	pstmt->setInt(5, nbnotes);
+	pstmt->setString(5, gm);
+	pstmt->setInt(6, nbnotes);
 	try
 	{
 		pstmt->execute();
-		cout << "Une nouvelle matiere ajoutee" << endl;
 	}
 	catch (sql::SQLException e)
 	{
@@ -98,32 +99,17 @@ void databaseConnection::ajouterMatiere(string idMat, string nomMat, double coef
 	delete pstmt;
 
 }
-void databaseConnection::setGM(string idGM, string idM)
-{
-	sql::PreparedStatement* pstmt;
-	pstmt = con->prepareStatement("UPDATE Matiere set gm=? where idMat = ?");
-	pstmt->setString(1, idGM);
-	pstmt->setString(2, idM);
-	try
-	{
-		pstmt->execute();
-		cout << "Matiere ajoutee au groupe avec success" << endl;
-	}
-	catch (sql::SQLException e)
-	{
-		cout << "Erreur d'execution" << endl;
-	}
-	delete pstmt;
-}
-void databaseConnection::ajouterGroupeModule(string idGM, string nomGM, double coefGM)
+
+void databaseConnection::ajouterGroupeModule(string idGM, string nomGM, double coefGM,string gp)
 {
 	sql::PreparedStatement* pstmt;
 	con->setSchema("projetcpp");
 
-	pstmt = con->prepareStatement("INSERT INTO groupeModule(idGM,nomGM,coefGM) values(?,?,?)");
+	pstmt = con->prepareStatement("INSERT INTO groupeModule(idGM,nomGM,coefGM,grp) values(?,?,?,?)");
 	pstmt->setString(1, idGM);
 	pstmt->setString(2, nomGM);
 	pstmt->setDouble(3, coefGM);
+	pstmt->setString(4, gp);
 	try
 	{
 		pstmt->execute();
@@ -214,6 +200,42 @@ sql::ResultSet* databaseConnection::fetchEtudiants(string id)
 		exit(1);
 	}
 }
+sql::ResultSet* databaseConnection::fetchEtudiantById(int id)
+{
+	sql::ResultSet* rs;
+	sql::PreparedStatement* pstmt;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement(" SELECT p.id,e.num_insc,nom,prenom,mail from etudiant e join personne p on (p.id = e.id) having(num_insc=?)");
+	pstmt->setInt(1, id);
+	try
+	{
+		rs = pstmt->executeQuery();
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur :  " << e.what() << endl;
+		exit(1);
+	}
+}
+
+sql::ResultSet* databaseConnection::fetchEnseignant(int cnss)
+{
+	sql::ResultSet* rs;
+	sql::PreparedStatement* pstmt;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement(" SELECT p.id,e.cnss,nom,prenom,mail from Enseignant e join personne p on (p.id = e.id) having(cnss=?)");
+	pstmt->setInt(1, cnss);
+	try
+	{
+		rs = pstmt->executeQuery();
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur :  " << e.what() << endl;
+		exit(1);
+	}
+}
+
 sql::ResultSet* databaseConnection::listeEtudiants()
 {
 	sql::ResultSet* rs;
@@ -313,14 +335,15 @@ void databaseConnection::deleteStudent(int id)
 	delete pstmt;
 	
 }
-sql::ResultSet* databaseConnection::listeGroupesModules()
+sql::ResultSet* databaseConnection::listeGroupesModules(string idG)
 {
-	sql::Statement* stmt;
+	sql::PreparedStatement* pstmt;
 	con->setSchema("projetcpp");
-	stmt = con->createStatement();
+	pstmt = con->prepareStatement("SELECT * FROM GROUPEMODULE WHERE (grp=?)");
+	pstmt->setString(1, idG);
 	try
 	{
-		sql::ResultSet*rs = stmt->executeQuery("SELECT * FROM GROUPEMODULE;");
+		sql::ResultSet*rs = pstmt->executeQuery();
 		return rs;
 
 	}
@@ -329,9 +352,43 @@ sql::ResultSet* databaseConnection::listeGroupesModules()
 		cout << "Erreur : " << e.what() << endl;
 	}
 
-	cout << "aaa" << endl;
-	delete stmt;
+	delete pstmt;
+ }
+sql::ResultSet* databaseConnection::fetchMatieres(string idGM)
+{
+	sql::PreparedStatement* pstmt;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement("SELECT * FROM MATIERE WHERE (gm=?)");
+	pstmt->setString(1, idGM);
+	try
+	{
+		sql::ResultSet* rs = pstmt->executeQuery();
+		return rs;
+	}catch (sql::SQLException e)
+	{
+		cout << "Erreur " << e.what() << endl;
+	}
+
 }
+sql::ResultSet* databaseConnection::fetchMatierById(string idM)
+{
+	con->setSchema("projetcpp");
+	sql::PreparedStatement* pstmt;
+	sql::ResultSet* rs;
+	pstmt = con->prepareStatement("SELECT * FROM matiere where idMat = ? ");
+	pstmt->setString(1, idM);
+	try
+	{
+		rs = pstmt->executeQuery();
+		return rs;
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Error : " << e.what() << endl;
+	}
+	
+}
+
 
 
 

@@ -21,21 +21,24 @@ public:
 		  password(password)
 	{
 	}
- 	static void  ajouterEtudiant(int id, string nom, string prenom, string mail, int num_insc);
+	void createConnexion();
+ 	static void  ajouterEtudiant(int id, string nom, string prenom, string mail, int num_insc,string idGRP);
 	static void ajouterEnseignant(int id, string nom, string prenom, string mail, int cnss);
-	static void ajouterMatiere(string idMat, string nomMat, double coefMat, int cnss, int nbnotes);
-	static void setGM(string idGM,string idM);
-	static void ajouterGroupeModule(string idGM, string nomGM, double coefGM);
+	static void ajouterMatiere(string idMat, string nomMat,string gm, double coefMat, int cnss, int nbnotes);
+	static void ajouterGroupeModule(string idGM, string nomGM, double coefGM,string gp);
 	static void ajouterGroupe(string idGRP, string niveau, string diplome, string specialite, int num_g);
 	static void ajouterNote(int idEtu, string idMat, double note, string type);
 	static sql::ResultSet* fetchGroup();
 	static sql::ResultSet* fetchNotes(string idMat);
+	static sql::ResultSet* fetchMatieres(string idGM);
+	static sql::ResultSet* fetchMatierById(string idM);
 	static sql::ResultSet* listeEtudiants();
 	static sql::ResultSet* listeGroupes();
 	static sql::ResultSet* fetchEtudiants(string id);
+	static sql::ResultSet* fetchEtudiantById(int id);
+	static sql::ResultSet* fetchEnseignant(int cnss);
 	static void deleteStudent(int id);
-	void createConnexion();
 	static sql::ResultSet* listeEnseignants();
-	static sql::ResultSet* listeGroupesModules();
+	static sql::ResultSet* listeGroupesModules(string idG);
 };
 

@@ -29,6 +29,10 @@ public:
 	{
 		return idGRP;
 	}
+	vector<GroupeModule> get_groupe_module()
+	{
+		return  listeModules;
+	}
 
 	void set_id_grp(const string& id_grp)
 	{
@@ -78,12 +82,22 @@ public:
 	{
 		listeEtudiants.push_back(e);
 	}
-
+	void addGM(GroupeModule gm)
+	{
+		listeModules.push_back(gm);
+	}
 	void testAfficherEtudiants()
 	{
 		for(int i=0;i<listeEtudiants.size();i++)
 		{
 			cout << "Nom : " << listeEtudiants.at(i).get_nom() << endl;
+		}
+	}
+	void testAfficherGroupeModule()
+	{
+		for(int i=0;i<listeModules.size();i++)
+		{
+			cout << "Nom Module: " << listeModules.at(i).get_nom_gm() << " Nom GROUPE :"<<specialite<< endl;
 		}
 	}
 
