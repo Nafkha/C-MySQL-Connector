@@ -180,41 +180,33 @@ void remplirGroupe()
 			gm.set_id_gm(lGM->getString("idGM"));
 			gm.set_nom_gm(lGM->getString("nomGM"));
 			gm.set_coef_gm(lGM->getDouble("coefGM"));
+
+			sql::ResultSet* gr = databaseConnection::fetchMatieres(gm.get_id_gm());
+			while (gr->next())
+			{
+				sql::ResultSet* lEn = databaseConnection::fetchEnseignant(gr->getInt("ens"));
+				while (lEn->next()) {
+					Enseignant e(lEn->getInt("id"), lEn->getString("nom"), lEn->getString("prenom"), lEn->getString("mail"), lEn->getInt("cnss"), false);
+
+
+					Matiere m(gr->getString("idMat"), gr->getString("nomMat"), gr->getString("gm"), gr->getDouble("coef"), e, gr->getInt("nbnotes"), false);
+					gm.ajouterMatiere(m);
+				}
+			}
+
+			cout << "Nombre de matieres : " << gm.get_liste_mat().size() << endl;
 			listeGrp.at(i).addGM(gm);
 			
 		}
 		
 	}
+
 	/*---- TEST AFFICHAGE ----*/
 	for (int i = 0;i<listeGrp.size();i++)
 	{
-		listeGrp.at(i).testAfficherEtudiants();
+		afficherGroupe(listeGrp.at(i));
 	}
-	cout << "Modules : " << endl;
-	for(int i=0;i<listeGrp.size();i++)
-	{
-		for(int j=0;j<listeGrp.at(i).get_groupe_module().size();j++)
-		{
-			remplirGroupeModule(listeGrp.at(i).get_groupe_module().at(j));
-			cout << listeGrp.at(i).get_groupe_module().at(j).get_nom_gm() << endl;
-		}
-
-	}
-}
-void remplirGroupeModule(GroupeModule gm)
-{
-	sql::ResultSet* rs = databaseConnection::fetchMatieres(gm.get_id_gm());
-	while(rs->next())
-	{
-		sql::ResultSet* lEn = databaseConnection::fetchEnseignant(rs->getInt("ens"));
-		while (lEn->next()) {
-			Enseignant e(lEn->getInt("id"), lEn->getString("nom"), lEn->getString("prenom"), lEn->getString("mail"), lEn->getInt("cnss"), false);
-
-
-			Matiere m(rs->getString("idMat"), rs->getString("nomMat"),rs->getString("gm"), rs->getDouble("coef"), e, rs->getInt("nbnotes"), false);
-			gm.ajouterMatiere(m);
-		}
-	}
+	cout << endl;
 }
 void addNote()
 {
@@ -286,5 +278,43 @@ void addNote()
 
 		
 	
+	
+}
+void afficherGroupe(Groupe gp)
+{
+	int colwidth = 10;
+	vector<GroupeModule> listModule = gp.getListModule();
+	cout << setfill(' ') <<left<< setw(45)<<" ";
+	for (int i = 0;i < gp.getListModule().size();i++) {
+		cout<<setprecision(0) << setfill(' ') << setw(colwidth * gp.getListModule().at(i).get_liste_mat().size()) << gp.getListModule().at(i).get_nom_gm() << "|";
+	}
+	cout << endl;
+	cout << setfill(' ') << left << setw(45) << " ";
+
+	for(int i=0;i<gp.getListModule().size();i++)
+	{
+		for(int j = 0;j < gp.getListModule().at(i).get_liste_mat().size();j++)
+		{
+			cout << setprecision(0) << setw(colwidth) << gp.getListModule().at(i).get_liste_mat().at(j).get_nom_mat()<<'|';
+		}
+	}
+		cout << endl;
+		cout << setfill(' ') << left << setw(45) << " ";
+
+	for(int i=0;i<gp.getListModule().size();i++)
+	{
+		for(int j = 0;j < gp.getListModule().at(i).get_liste_mat().size();j++)
+		{
+			cout << setprecision(0) << setw(colwidth) << gp.getListModule().at(i).get_liste_mat().at(j).get_coef_gm()<<'|';
+		}
+	}
+		cout << endl;
+		cout << setfill(' ') << left << setw(30) << "Nom et Prenom " << endl;
+	
+	for(int i=0;i<gp.getListEtudiants().size();i++)
+	{
+		cout << setprecision(0) << setw(30) << gp.getListEtudiants().at(i).get_nom()+ ' '+ gp.getListEtudiants().at(i).get_prenom() <<'|'<< endl;
+	}
+
 	
 }

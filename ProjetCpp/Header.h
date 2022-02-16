@@ -23,3 +23,4 @@ void addNote();
 //Obtenir les données de la BD
 void remplirGroupe();
 void remplirGroupeModule(GroupeModule gm);
+void afficherGroupe(Groupe gp);

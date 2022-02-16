@@ -1,22 +1,7 @@
-﻿  Enseignant.cpp
-  Etudiant.cpp
-  Groupe.cpp
-  GroupeModule.cpp
-  Matiere.cpp
-  Note.cpp
-  Source.cpp
-  databaseConnection.cpp
-C:\Users\nafkh\source\repos\ProjetCpp\ProjetCpp\databaseConnection.cpp(242,26): warning C4101: 'pstmt' : variable locale non référencée
-C:\Users\nafkh\source\repos\ProjetCpp\ProjetCpp\databaseConnection.cpp(261,26): warning C4101: 'pstmt' : variable locale non référencée
-C:\Users\nafkh\source\repos\ProjetCpp\ProjetCpp\databaseConnection.cpp(280,26): warning C4101: 'pstmt' : variable locale non référencée
-  main.cpp
-C:\Users\nafkh\source\repos\ProjetCpp\ProjetCpp\main.cpp(11,10): warning C4067: jetons inattendus après la directive du préprocesseur - saut de ligne attendu
-C:\Users\nafkh\source\repos\ProjetCpp\ProjetCpp\main.cpp(132,17): warning C4060: l'instruction switch ne contient aucune étiquette 'case' ou 'default'
+﻿  Source.cpp
   Génération de code en cours
-C:\Users\nafkh\source\repos\ProjetCpp\ProjetCpp\databaseConnection.cpp(219): warning C4715: 'databaseConnection::fetchEtudiantById' : les chemins de contrôle ne retournent pas tous une valeur
-C:\Users\nafkh\source\repos\ProjetCpp\ProjetCpp\databaseConnection.cpp(390): warning C4715: 'databaseConnection::fetchMatierById' : les chemins de contrôle ne retournent pas tous une valeur
-  14 of 547 functions ( 2.6%) were compiled, the rest were copied from previous compilation.
-    5 functions were new in current compilation
-    71 functions had inline decision re-evaluated but remain unchanged
+  5 of 567 functions ( 0.9%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   Fin de la génération du code
   ProjetCpp.vcxproj -> C:\Users\nafkh\source\repos\ProjetCpp\x64\Release\ProjetCpp.exe

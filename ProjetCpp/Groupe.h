@@ -86,19 +86,13 @@ public:
 	{
 		listeModules.push_back(gm);
 	}
-	void testAfficherEtudiants()
+	vector<GroupeModule> getListModule()
 	{
-		for(int i=0;i<listeEtudiants.size();i++)
-		{
-			cout << "Nom : " << listeEtudiants.at(i).get_nom() << endl;
-		}
+		return listeModules;
 	}
-	void testAfficherGroupeModule()
+	vector<Etudiant> getListEtudiants()
 	{
-		for(int i=0;i<listeModules.size();i++)
-		{
-			cout << "Nom Module: " << listeModules.at(i).get_nom_gm() << " Nom GROUPE :"<<specialite<< endl;
-		}
+		return listeEtudiants;
 	}
 
 }; 
