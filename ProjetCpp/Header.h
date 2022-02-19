@@ -21,7 +21,13 @@ void creationGroupeModule(); //Créer un Groupe Module
 void afficherListeGroupeModule();
 void creationMatiere();
 void addNote();
+void afficherEtudiantsParGroupe();
 //Obtenir les données de la BD
 void remplirGroupe();
 void remplirGroupeModule(GroupeModule gm);
 void afficherGroupe(Groupe gp);
+string testAdmission(double moy);
+string testMention(double moy);
+void affciherMatiereParEsneignant();
+
+

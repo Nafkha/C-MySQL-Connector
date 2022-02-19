@@ -1,6 +1,5 @@
 #include "databaseConnection.h"
 sql::Connection* con;
-
 void databaseConnection::createConnexion()
 {
 	sql::Driver* driver;
@@ -41,7 +40,6 @@ void databaseConnection::ajouterEnseignant(int id, string nom, string prenom, st
 		cout << "Erreur d'insertion enseignant : " << e.what() << endl;
 	}
 }
-
 void databaseConnection::ajouterEtudiant(int id, string nom, string prenom, string mail, int num_insc,string idGRP)
 {
 	sql::PreparedStatement* pstmt;
@@ -99,7 +97,6 @@ void databaseConnection::ajouterMatiere(string idMat, string nomMat,string gm, d
 	delete pstmt;
 
 }
-
 void databaseConnection::ajouterGroupeModule(string idGM, string nomGM, double coefGM,string gp)
 {
 	sql::PreparedStatement* pstmt;
@@ -217,7 +214,6 @@ sql::ResultSet* databaseConnection::fetchEtudiantById(int id)
 		exit(1);
 	}
 }
-
 sql::ResultSet* databaseConnection::fetchEnseignant(int cnss)
 {
 	sql::ResultSet* rs;
@@ -235,7 +231,6 @@ sql::ResultSet* databaseConnection::fetchEnseignant(int cnss)
 		exit(1);
 	}
 }
-
 sql::ResultSet* databaseConnection::listeEtudiants()
 {
 	sql::ResultSet* rs;
@@ -426,6 +421,42 @@ sql::ResultSet* databaseConnection::fetchMoyGM(int id, string idGM)
 		cout << "Erreur : " << e.what() << endl;
 	}
 }
+sql::ResultSet* databaseConnection::listeEtudiantsByGrp(string idGrp)
+{
+	sql::PreparedStatement* pstmt;
+	sql::ResultSet* rs;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement("SELECT e.num_insc,p.nom,p.prenom from personne p join etudiant e on p.Id=e.id where(e.grp=?)");
+	pstmt->setString(1, idGrp);
+	try
+	{
+		rs = pstmt->executeQuery();
+		return  rs;
+		
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur : " << e.what();
+	}
+}
+sql::ResultSet* databaseConnection::fetchMatiereByEns(int cnss)
+{
+	sql::PreparedStatement* pstmt;
+	sql::ResultSet* rs;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement("SELECT nomMat,coef from matiere m join enseignant e on(m.ens=e.cnss) where(e.cnss=?) ");
+	pstmt->setInt(1,cnss);
+	try
+	{
+		rs = pstmt->executeQuery();
+		return rs;
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur : " << e.what() << endl;
+	}
+}
+
 
 
 

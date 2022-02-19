@@ -34,6 +34,7 @@ public:
 	static sql::ResultSet* fetchMoyGM(int id, string idGM);
 	static sql::ResultSet* fetchMatieres(string idGM);
 	static sql::ResultSet* fetchMatierById(string idM);
+	static sql::ResultSet* fetchMatiereByEns(int cnss);
 	static sql::ResultSet* listeEtudiants();
 	static sql::ResultSet* listeGroupes();
 	static sql::ResultSet* fetchEtudiants(string id);
@@ -42,5 +43,6 @@ public:
 	static void deleteStudent(int id);
 	static sql::ResultSet* listeEnseignants();
 	static sql::ResultSet* listeGroupesModules(string idG);
+	static sql::ResultSet* listeEtudiantsByGrp(string idGrp);
 };
 

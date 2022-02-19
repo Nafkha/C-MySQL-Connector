@@ -77,13 +77,14 @@ int main()
 	Menu_Etudiants:
 	cout << "1-Ajouter un etudiant" << endl;
 	cout << "2-Afficher la liste des etudiants" << endl;
-	cout << "3-Supprimer un etudiant" << endl;
-	cout << "4-Menu Principale" << endl;
+	cout << "3-Afficher la liste des etudiants par groupe" << endl;
+	cout << "4-Supprimer un etudiant" << endl;
+	cout << "5-Menu Principale" << endl;
 	do
 	{
 		cout << "Donner votre choix" << endl;
 		cin >> choice;
-	} while (choice < 0 || choice>4);
+	} while (choice < 0 || choice>5);
 	switch (choice)
 	{
 	case 0:
@@ -94,22 +95,26 @@ int main()
 	case 2:
 		afficherListeEtudiants();
 		goto Menu_Principale;
-	case 3 :
+	case 3:
+		afficherEtudiantsParGroupe();
+		goto Menu_Principale;
+	case 4 :
 		supprimerEtudiant();
 		goto Menu_Etudiants;
-	case 4:
+	case 5:
 		goto Menu_Principale;
 	}
 	Menu_Enseignant:
 	cout << "1-Ajouter un enseignant" << endl;
 	cout << "2-Afficher la liste des tous les enseignants" << endl;
+	cout << "3-Afficher la liste des matieres d'un enseignant" << endl;
 	cout << "3-Supprimer un enseingnat" << endl;
 	cout << "4-Menu Principale" << endl;
 	do
 	{
 		cout << "Donner votre choix" << endl;
 		cin >> choice;
-	} while (choice < 0 || choice>4);
+	} while (choice < 0 || choice>5);
 	switch (choice)
 	{
 	case 0:
@@ -121,9 +126,12 @@ int main()
 		afficherListeEnseignant();
 		goto Menu_Principale;
 	case 3:
+		affciherMatiereParEsneignant();
+		goto  Menu_Principale;
+	case 4:
 		cout << "Function not ready yet" << endl;
 		goto Menu_Etudiants;
-	case 4:
+	case 5:
 		goto Menu_Principale;
 	}
 	Menu_GroupeModule:

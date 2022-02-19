@@ -19,18 +19,17 @@ void creationEtudiant()
 	cin >> num_insc;
 	cout << "GROUPE :";
 	cin >> idGRP;
-	cout << "aaaa" << endl;
 	Etudiant e(id, nom, prenom, mail, num_insc,idGRP, true);
 }
 void afficherListeEtudiants()
 {
-	int colwidth = 20;
+	int colwidth = 30;
 	sql::ResultSet* rs = databaseConnection::listeEtudiants();
 	//cout << "ID" << setw(5) << "Nom" << setw(10) << "Prenom" << setw(5) << endl;
-	cout << setw(colwidth) << "ID" << setw(colwidth) << "Nom" << setw(colwidth) << "Prenom" << setw(colwidth) << endl;
+	cout <<setw(7)<<left << "ID" << '|' << setw(colwidth) << "Nom" << '|' << setw(colwidth) << "Prenom"  << endl;
 	while (rs->next())
 	{
-		cout <<setprecision(0) <<setw(colwidth) << rs->getInt("id")<<setprecision(4) << setw(colwidth) << rs->getString("nom") <<setprecision(4) << setw(colwidth) << rs->getString("prenom") << endl;
+		cout <<setw(7)<<left << rs->getInt("id") << '|' << setw(colwidth) << rs->getString("nom") << '|' << setw(colwidth) << rs->getString("prenom")  << endl;
 	}
 }
 void supprimerEtudiant()
@@ -280,14 +279,48 @@ void addNote()
 	
 	
 }
+
+string testAdmission(double moy)
+{
+	if(moy>=10)
+	{
+		return "Admis";
+	}else
+	{
+		return "Ajournee";
+	}
+}
+string testMention(double moy)
+{
+	if(moy>=10 && moy<12)
+	{
+		return "Passable";
+	}
+	if(moy>=12 && moy<14)
+	{
+		return "Assez Bien";
+	}if(moy>=14 && moy<16)
+	{
+		return "Bien";
+	}if(moy>=16 && moy<18)
+	{
+		return "Tres Bien";
+	}if(moy>=18 && moy<20)
+	{
+		return "Excellent";
+	}
+}
+
 void afficherGroupe(Groupe gp)
 {
 	int colwidth = 10;
 	vector<GroupeModule> listModule = gp.getListModule();
+	if(gp.getListModule().size()>0){
 	cout << setfill(' ') <<left<< setw(45)<<" ";
 	for (int i = 0;i < gp.getListModule().size();i++) {
-		cout<<setprecision(0) << setfill(' ') << setw(colwidth * (gp.getListModule().at(i).get_liste_mat().size()+1)+2) << gp.getListModule().at(i).get_nom_gm() << "|";
+		cout<<setprecision(0) << setfill(' ') << setw(colwidth * (gp.getListModule().at(i).get_liste_mat().size()+1)+ gp.getListModule().at(i).get_liste_mat().size()) << gp.getListModule().at(i).get_nom_gm() << "|";
 	}
+	cout << setw(colwidth) << "Moyenne" << '|' << setw(colwidth) << "Resultat" << '|' << setw(colwidth) << "Mention" << '|';
 	cout << endl;
 	cout << setfill(' ') << left << setw(45) << " ";
 
@@ -318,28 +351,72 @@ void afficherGroupe(Groupe gp)
 	
 	for(int i=0;i<gp.getListEtudiants().size();i++)
 	{
+		double moy = 0;
+		double coefTot = 0;
 		cout << setprecision(0) << setw(45) << gp.getListEtudiants().at(i).get_nom()+ ' '+ gp.getListEtudiants().at(i).get_prenom();
 		for(int j=0;j<gp.getListModule().size();j++)
 		{
+			double coef = 0;
+			double note = 0;
 			for (int k = 0;k < gp.getListModule().at(j).get_liste_mat().size();k++) {
-				
+				coef += gp.getListModule().at(j).get_liste_mat().at(k).get_coef_gm();
 				sql::ResultSet* rs = databaseConnection::fetchMoyMat(gp.getListModule().at(j).get_liste_mat().at(k).get_id_mat(), gp.getListEtudiants().at(i).get_num_insc());
 				while(rs->next()){
+					note += rs->getDouble(1) * gp.getListModule().at(j).get_liste_mat().at(k).get_coef_gm();
 					cout << fixed;
 				cout << setprecision(2)<<setfill(' ') << setw(colwidth) << rs->getDouble(1) << '|';
 				
 				}
 				delete rs;
 			}
-			sql::ResultSet* rs = databaseConnection::fetchMoyGM(gp.getListEtudiants().at(i).get_num_insc(), gp.getListModule().at(j).get_id_gm());
-			while(rs->next()){
+			double moyGm = note / coef;
+			coefTot += gp.getListModule().at(j).get_coef_gm();
+			moy += moyGm*gp.getListModule().at(j).get_coef_gm();
 				
 				cout << fixed;
-			cout << setprecision(2) << setfill(' ') << setw(colwidth) << rs->getDouble(1) << '|';
-			}
+			cout << setprecision(2) << setfill(' ') << setw(colwidth) << moyGm << '|';
+			
 		}
+
+		moy = moy / coefTot;
+		cout << setprecision(2) << setfill(' ') << setw(colwidth) << moy << '|' << setw(colwidth)<< testAdmission(moy) << '|'<< setw(colwidth) << testMention(moy) << '|';
 		cout << endl;
+	}
+	}else
+	{
+		cout << "Veuillez remplir le groupe ... " << endl;
 	}
 
 	
+}
+
+void afficherEtudiantsParGroupe()
+{
+	cout << "Donner l'ID de GROUPE : " << endl;
+	string idg;
+	cin >> idg;
+	sql::ResultSet* rs = databaseConnection::listeEtudiantsByGrp(idg);
+	cout << setw(20) << left << "Num Inscription" << '|' << setw(20) << "Nom" << '|' << setw(20) << "Prenom" << '|' << endl;
+	while(rs->next())
+	{
+		cout << setw(20) << left << rs->getInt("num_insc") << '|' << setw(20) << rs->getString("nom") << '|' << setw(20) << rs->getString("prenom") << '|' << endl;
+	}
+	cout << endl;
+	
+	delete rs;
+}
+void affciherMatiereParEsneignant()
+{
+	sql::ResultSet* rs;
+	cout << "Donner le code de l'enseignant";
+	int cd;
+	cin >> cd;
+	cout << endl;
+	rs = databaseConnection::fetchMatiereByEns(cd);
+	cout << setw(20) << left << "Matiere " << '|' << setw(20) << "Coeffecient" << endl;
+	while(rs->next())
+	{
+		cout << fixed;
+		cout << setw(20) << left << rs->getString("nomMat") << '|' << setw(20) <<setprecision(1) << rs->getDouble("coef") << endl;
+	}
 }
