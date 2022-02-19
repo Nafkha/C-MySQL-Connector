@@ -286,7 +286,7 @@ void afficherGroupe(Groupe gp)
 	vector<GroupeModule> listModule = gp.getListModule();
 	cout << setfill(' ') <<left<< setw(45)<<" ";
 	for (int i = 0;i < gp.getListModule().size();i++) {
-		cout<<setprecision(0) << setfill(' ') << setw(colwidth * (gp.getListModule().at(i).get_liste_mat().size())) << gp.getListModule().at(i).get_nom_gm() << "|";
+		cout<<setprecision(0) << setfill(' ') << setw(colwidth * (gp.getListModule().at(i).get_liste_mat().size()+1)+2) << gp.getListModule().at(i).get_nom_gm() << "|";
 	}
 	cout << endl;
 	cout << setfill(' ') << left << setw(45) << " ";
@@ -298,6 +298,7 @@ void afficherGroupe(Groupe gp)
 			{
 				cout << setprecision(0)<<setfill(' ') << setw(colwidth) << gp.getListModule().at(i).get_liste_mat().at(j).get_nom_mat() << '|';
 			}
+			cout << setw(colwidth) << "Moyenne"<<'|';
 			
 		}
 	}
@@ -310,6 +311,7 @@ void afficherGroupe(Groupe gp)
 		{
 			cout << setprecision(0) << setw(colwidth) << gp.getListModule().at(i).get_liste_mat().at(j).get_coef_gm()<<'|';
 		}
+		cout << setw(colwidth) << " " << '|';
 	}
 		cout << endl;
 		cout << setfill(' ') << left << setw(colwidth) << "Nom et Prenom " << endl;
@@ -320,11 +322,20 @@ void afficherGroupe(Groupe gp)
 		for(int j=0;j<gp.getListModule().size();j++)
 		{
 			for (int k = 0;k < gp.getListModule().at(j).get_liste_mat().size();k++) {
+				
 				sql::ResultSet* rs = databaseConnection::fetchMoyMat(gp.getListModule().at(j).get_liste_mat().at(k).get_id_mat(), gp.getListEtudiants().at(i).get_num_insc());
 				while(rs->next()){
-				cout << setprecision(0)<<setfill(' ') << setw(colwidth) << rs->getString(1) << '|';
+					cout << fixed;
+				cout << setprecision(2)<<setfill(' ') << setw(colwidth) << rs->getDouble(1) << '|';
 				
 				}
+				delete rs;
+			}
+			sql::ResultSet* rs = databaseConnection::fetchMoyGM(gp.getListEtudiants().at(i).get_num_insc(), gp.getListModule().at(j).get_id_gm());
+			while(rs->next()){
+				
+				cout << fixed;
+			cout << setprecision(2) << setfill(' ') << setw(colwidth) << rs->getDouble(1) << '|';
 			}
 		}
 		cout << endl;

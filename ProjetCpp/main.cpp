@@ -53,7 +53,7 @@ int main()
 	Menu_Groupe:
 	cout << "1-Ajouter un groupe" << endl;
 	cout << "2-Afficher la liste de groupes" << endl;
-	cout << "3-Selectionner un groupe" << endl;
+	cout << "3-Menu Principale" << endl;
 	do
 	{
 		cout << "Donner votre choix" << endl;
@@ -71,18 +71,19 @@ int main()
 		remplirGroupe();
 		goto Menu_Groupe;
 	case 3:
-		goto Menu_Principale;;
+		goto Menu_Principale;
 	}
 
 	Menu_Etudiants:
 	cout << "1-Ajouter un etudiant" << endl;
 	cout << "2-Afficher la liste des etudiants" << endl;
 	cout << "3-Supprimer un etudiant" << endl;
+	cout << "4-Menu Principale" << endl;
 	do
 	{
 		cout << "Donner votre choix" << endl;
 		cin >> choice;
-	} while (choice < 0 || choice>3);
+	} while (choice < 0 || choice>4);
 	switch (choice)
 	{
 	case 0:
@@ -96,16 +97,19 @@ int main()
 	case 3 :
 		supprimerEtudiant();
 		goto Menu_Etudiants;
+	case 4:
+		goto Menu_Principale;
 	}
 	Menu_Enseignant:
 	cout << "1-Ajouter un enseignant" << endl;
 	cout << "2-Afficher la liste des tous les enseignants" << endl;
 	cout << "3-Supprimer un enseingnat" << endl;
+	cout << "4-Menu Principale" << endl;
 	do
 	{
 		cout << "Donner votre choix" << endl;
 		cin >> choice;
-	} while (choice < 0 || choice>3);
+	} while (choice < 0 || choice>4);
 	switch (choice)
 	{
 	case 0:
@@ -119,16 +123,19 @@ int main()
 	case 3:
 		cout << "Function not ready yet" << endl;
 		goto Menu_Etudiants;
+	case 4:
+		goto Menu_Principale;
 	}
 	Menu_GroupeModule:
 	cout << "1-Ajouter un groupe module"<<endl;
 	cout << "2-Afficher la liste des groupes modules"<<endl;
 	cout << "3-Afficher la liste des groupes modules"<<endl;
+	cout << "4-Menu Principale"<<endl;
 	do
 	{
 		cout << "Donner votre choix" << endl;
 		cin >> choice;
-	} while (choice < 0 || choice>3);
+	} while (choice < 0 || choice>4);
 	switch (choice);
 	switch (choice)
 	{
@@ -144,19 +151,23 @@ int main()
 		cout << "Supprimer Groupe module" << endl;
 		goto Menu_GroupeModule;
 		
-
+	case 4:
+		goto Menu_Principale;
 	}
 	Menu_Matieres:
 	cout << "1-Ajouter une matiere " << endl;
+	cout << "2-Menu Principale " << endl;
 	do
 	{
 		cout << "Donner votre choix" << endl;
 		cin >> choice;
-	} while (choice != 1);
+	} while (choice < 1 || choice>2);
 	switch (choice)
 	{
 	case 1 :
 		creationMatiere();
+	case 2:
+		goto Menu_Principale;
 	}
 	Menu_Note:
 	cout << "1-Ajouter une Note " << endl;
@@ -164,11 +175,14 @@ int main()
 	{
 		cout << "Donner votre choix" << endl;
 		cin >> choice;
-	} while (choice != 1);
+	} while (choice < 1 || choice >2);
 	switch (choice)
 	{
 	case 1:
 		addNote();
+		goto Menu_Note;
+	case 2:
+		goto Menu_Principale;
 	}
 
 

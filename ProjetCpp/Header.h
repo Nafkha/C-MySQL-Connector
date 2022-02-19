@@ -8,6 +8,7 @@
 #include "Note.h"
 #include "databaseConnection.h"
 #include "iomanip"
+#include <cmath>
 using namespace std;
 void creationEtudiant(); //Créer un étudiant;
 void afficherListeEtudiants(); 

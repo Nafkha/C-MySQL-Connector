@@ -31,6 +31,7 @@ public:
 	static sql::ResultSet* fetchGroup();
 	static sql::ResultSet* fetchNotes(string idMat);
 	static sql::ResultSet* fetchMoyMat(string idMat, int idEtu);
+	static sql::ResultSet* fetchMoyGM(int id, string idGM);
 	static sql::ResultSet* fetchMatieres(string idGM);
 	static sql::ResultSet* fetchMatierById(string idM);
 	static sql::ResultSet* listeEtudiants();

@@ -399,6 +399,7 @@ sql::ResultSet* databaseConnection::fetchMoyMat(string idMat, int idEtu)
 	try
 	{
 		rs = pstmt->executeQuery();
+		return rs;
 
 	}
 	catch (sql::SQLException e)
@@ -407,7 +408,24 @@ sql::ResultSet* databaseConnection::fetchMoyMat(string idMat, int idEtu)
 	}
 	
 }
-
+sql::ResultSet* databaseConnection::fetchMoyGM(int id, string idGM)
+{
+	sql::PreparedStatement* pstmt;
+	sql::ResultSet* rs;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement("SELECT avg(Note) from note n join matiere m on n.Mat=m.idMat join groupemodule g on m.gm=g.idGM where (n.Etu = ? and m.gm=?)");
+	pstmt->setInt(1, id);
+	pstmt->setString(2, idGM);
+	try
+	{
+		rs = pstmt->executeQuery();
+		return rs;
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur : " << e.what() << endl;
+	}
+}
 
 
 
