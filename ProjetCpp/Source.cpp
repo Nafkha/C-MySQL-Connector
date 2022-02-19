@@ -286,16 +286,19 @@ void afficherGroupe(Groupe gp)
 	vector<GroupeModule> listModule = gp.getListModule();
 	cout << setfill(' ') <<left<< setw(45)<<" ";
 	for (int i = 0;i < gp.getListModule().size();i++) {
-		cout<<setprecision(0) << setfill(' ') << setw(colwidth * gp.getListModule().at(i).get_liste_mat().size()) << gp.getListModule().at(i).get_nom_gm() << "|";
+		cout<<setprecision(0) << setfill(' ') << setw(colwidth * (gp.getListModule().at(i).get_liste_mat().size())) << gp.getListModule().at(i).get_nom_gm() << "|";
 	}
 	cout << endl;
 	cout << setfill(' ') << left << setw(45) << " ";
 
 	for(int i=0;i<gp.getListModule().size();i++)
 	{
-		for(int j = 0;j < gp.getListModule().at(i).get_liste_mat().size();j++)
 		{
-			cout << setprecision(0) << setw(colwidth) << gp.getListModule().at(i).get_liste_mat().at(j).get_nom_mat()<<'|';
+			for (int j = 0;j < gp.getListModule().at(i).get_liste_mat().size();j++)
+			{
+				cout << setprecision(0)<<setfill(' ') << setw(colwidth) << gp.getListModule().at(i).get_liste_mat().at(j).get_nom_mat() << '|';
+			}
+			
 		}
 	}
 		cout << endl;
@@ -309,11 +312,22 @@ void afficherGroupe(Groupe gp)
 		}
 	}
 		cout << endl;
-		cout << setfill(' ') << left << setw(30) << "Nom et Prenom " << endl;
+		cout << setfill(' ') << left << setw(colwidth) << "Nom et Prenom " << endl;
 	
 	for(int i=0;i<gp.getListEtudiants().size();i++)
 	{
-		cout << setprecision(0) << setw(30) << gp.getListEtudiants().at(i).get_nom()+ ' '+ gp.getListEtudiants().at(i).get_prenom() <<'|'<< endl;
+		cout << setprecision(0) << setw(45) << gp.getListEtudiants().at(i).get_nom()+ ' '+ gp.getListEtudiants().at(i).get_prenom();
+		for(int j=0;j<gp.getListModule().size();j++)
+		{
+			for (int k = 0;k < gp.getListModule().at(j).get_liste_mat().size();k++) {
+				sql::ResultSet* rs = databaseConnection::fetchMoyMat(gp.getListModule().at(j).get_liste_mat().at(k).get_id_mat(), gp.getListEtudiants().at(i).get_num_insc());
+				while(rs->next()){
+				cout << setprecision(0)<<setfill(' ') << setw(colwidth) << rs->getString(1) << '|';
+				
+				}
+			}
+		}
+		cout << endl;
 	}
 
 	

@@ -30,6 +30,7 @@ public:
 	static void ajouterNote(int idEtu, string idMat, double note, string type);
 	static sql::ResultSet* fetchGroup();
 	static sql::ResultSet* fetchNotes(string idMat);
+	static sql::ResultSet* fetchMoyMat(string idMat, int idEtu);
 	static sql::ResultSet* fetchMatieres(string idGM);
 	static sql::ResultSet* fetchMatierById(string idM);
 	static sql::ResultSet* listeEtudiants();

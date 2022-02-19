@@ -388,6 +388,26 @@ sql::ResultSet* databaseConnection::fetchMatierById(string idM)
 	}
 	
 }
+sql::ResultSet* databaseConnection::fetchMoyMat(string idMat, int idEtu)
+{
+	sql::PreparedStatement* pstmt;
+	sql::ResultSet* rs;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement("SELECT round(avg(Note),2) from note where(Mat=? and Etu = ?) ");
+	pstmt->setString(1, idMat);
+	pstmt->setInt(2, idEtu);
+	try
+	{
+		rs = pstmt->executeQuery();
+
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Error : " << e.what()<<endl;
+	}
+	
+}
+
 
 
 
