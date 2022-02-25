@@ -20,7 +20,7 @@ int main()
 	db.createConnexion();
 	
 	Menu_Principale:
-	cout << "1-Gestion des Groupe " << endl;
+	cout << "1-Gestion des Groupes " << endl;
 	cout << "2-Gestion des Etudiants " << endl;
 	cout << "3-Gestion des Enseignants " << endl;
 	cout << "4-Gestion des Groupes Modules " << endl;
@@ -51,8 +51,9 @@ int main()
 		goto  Menu_Note;
 	}
 	Menu_Groupe:
+	cout << "0-Quitter le programme" << endl;
 	cout << "1-Ajouter un groupe" << endl;
-	cout << "2-Afficher la liste de groupes" << endl;
+	cout << "2-Afficher les PV des groupes" << endl;
 	cout << "3-Menu Principale" << endl;
 	do
 	{
@@ -67,7 +68,6 @@ int main()
 		creationGroupe();
 		goto Menu_Groupe;
 	case 2:
-		//afficherListeGroupe();
 		remplirGroupe();
 		goto Menu_Groupe;
 	case 3:
@@ -108,8 +108,8 @@ int main()
 	cout << "1-Ajouter un enseignant" << endl;
 	cout << "2-Afficher la liste des tous les enseignants" << endl;
 	cout << "3-Afficher la liste des matieres d'un enseignant" << endl;
-	cout << "3-Supprimer un enseingnat" << endl;
-	cout << "4-Menu Principale" << endl;
+	cout << "4-Supprimer un enseingnat" << endl;
+	cout << "5-Menu Principale" << endl;
 	do
 	{
 		cout << "Donner votre choix" << endl;
@@ -129,15 +129,16 @@ int main()
 		affciherMatiereParEsneignant();
 		goto  Menu_Principale;
 	case 4:
-		cout << "Function not ready yet" << endl;
+		cout << "Supprimer un enseignant" << endl;
 		goto Menu_Etudiants;
 	case 5:
 		goto Menu_Principale;
 	}
 	Menu_GroupeModule:
+	cout << "0-Quitter le programme" << endl;
 	cout << "1-Ajouter un groupe module"<<endl;
 	cout << "2-Afficher la liste des groupes modules"<<endl;
-	cout << "3-Afficher la liste des groupes modules"<<endl;
+	cout << "3-Supprimer un groupe module"<<endl;
 	cout << "4-Menu Principale"<<endl;
 	do
 	{
@@ -153,7 +154,7 @@ int main()
 		creationGroupeModule();
 		goto Menu_GroupeModule;
 	case 2:
-	//	afficherListeGroupeModule();
+		cout << "Groupe Module" << endl;
 		goto Menu_GroupeModule;
 	case 3:
 		cout << "Supprimer Groupe module" << endl;
@@ -163,33 +164,53 @@ int main()
 		goto Menu_Principale;
 	}
 	Menu_Matieres:
+	cout << "0-Quitter le programme" << endl;
 	cout << "1-Ajouter une matiere " << endl;
-	cout << "2-Menu Principale " << endl;
+	cout << "2-Supprimer une matiere " << endl;
+	cout << "3-Mattre a jour une matiere " << endl;
+	cout << "4-Menu Principale " << endl;
 	do
 	{
 		cout << "Donner votre choix" << endl;
 		cin >> choice;
-	} while (choice < 1 || choice>2);
+	} while (choice < 0 || choice>4);
 	switch (choice)
 	{
+	case 0 :
+		exit(1);
 	case 1 :
 		creationMatiere();
-	case 2:
+		goto Menu_Principale;
+	case 2 :
+		cout << "Supprimer une matiere" << endl;
+		goto Menu_Principale;
+	case 3:
+		cout << "Mettre a jour une matiere" << endl;
+		goto Menu_Principale;
+	case 4:
 		goto Menu_Principale;
 	}
 	Menu_Note:
+	cout << "0-Quitter le programme" << endl;
 	cout << "1-Ajouter une Note " << endl;
+	cout << "2-Mettre a jour une Note " << endl;
+	cout << "3-Menu principale " << endl;
 	do
 	{
 		cout << "Donner votre choix" << endl;
 		cin >> choice;
-	} while (choice < 1 || choice >2);
+	} while (choice < 0 || choice >3);
 	switch (choice)
 	{
+	case 0:
+		exit(1);
 	case 1:
 		addNote();
-		goto Menu_Note;
+		goto Menu_Principale;
 	case 2:
+		cout << "Mise a jour" << endl;
+		goto Menu_Principale;
+	case 3:
 		goto Menu_Principale;
 	}
 

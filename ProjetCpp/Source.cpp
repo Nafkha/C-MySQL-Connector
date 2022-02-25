@@ -130,6 +130,7 @@ void creationMatiere()
 	getline(cin, gm);
 	cout << "Donner la coeffecience : ";
 	cin >> coef;
+
 	cout << "Donner l'ID de l'enseignant : ";
 	cin >> ens;
 	sql::ResultSet* rs = databaseConnection::fetchEnseignant(ens);
@@ -145,7 +146,6 @@ void creationMatiere()
 	}
 	
 }
-
 void remplirGroupe()
 {
 	sql::ResultSet* rs;
@@ -279,7 +279,6 @@ void addNote()
 	
 	
 }
-
 string testAdmission(double moy)
 {
 	if(moy>=10)
@@ -310,19 +309,18 @@ string testMention(double moy)
 		return "Excellent";
 	}
 }
-
 void afficherGroupe(Groupe gp)
 {
 	int colwidth = 10;
 	vector<GroupeModule> listModule = gp.getListModule();
 	if(gp.getListModule().size()>0){
-	cout << setfill(' ') <<left<< setw(45)<<" ";
+	cout << setfill(' ') <<left<< setw(60)<<" ";
 	for (int i = 0;i < gp.getListModule().size();i++) {
 		cout<<setprecision(0) << setfill(' ') << setw(colwidth * (gp.getListModule().at(i).get_liste_mat().size()+1)+ gp.getListModule().at(i).get_liste_mat().size()) << gp.getListModule().at(i).get_nom_gm() << "|";
 	}
 	cout << setw(colwidth) << "Moyenne" << '|' << setw(colwidth) << "Resultat" << '|' << setw(colwidth) << "Mention" << '|';
 	cout << endl;
-	cout << setfill(' ') << left << setw(45) << " ";
+	cout << setfill(' ') << left << setw(60) << " ";
 
 	for(int i=0;i<gp.getListModule().size();i++)
 	{
@@ -336,7 +334,7 @@ void afficherGroupe(Groupe gp)
 		}
 	}
 		cout << endl;
-		cout << setfill(' ') << left << setw(45) << " ";
+		cout << setfill(' ') << left << setw(60) << " ";
 
 	for(int i=0;i<gp.getListModule().size();i++)
 	{
@@ -347,13 +345,13 @@ void afficherGroupe(Groupe gp)
 		cout << setw(colwidth) << " " << '|';
 	}
 		cout << endl;
-		cout << setfill(' ') << left << setw(colwidth) << "Nom et Prenom " << endl;
+		cout <<setw(15)<<"Numero"<<'|' << setw(45) << "Nom et Prenom " << endl;
 	
 	for(int i=0;i<gp.getListEtudiants().size();i++)
 	{
 		double moy = 0;
 		double coefTot = 0;
-		cout << setprecision(0) << setw(45) << gp.getListEtudiants().at(i).get_nom()+ ' '+ gp.getListEtudiants().at(i).get_prenom();
+		cout << setprecision(0)<<setw(15)<<gp.getListEtudiants().at(i).get_num_insc()<<'|' << setw(44) << gp.getListEtudiants().at(i).get_nom() + ' ' + gp.getListEtudiants().at(i).get_prenom();
 		for(int j=0;j<gp.getListModule().size();j++)
 		{
 			double coef = 0;
@@ -389,7 +387,6 @@ void afficherGroupe(Groupe gp)
 
 	
 }
-
 void afficherEtudiantsParGroupe()
 {
 	cout << "Donner l'ID de GROUPE : " << endl;
@@ -420,3 +417,4 @@ void affciherMatiereParEsneignant()
 		cout << setw(20) << left << rs->getString("nomMat") << '|' << setw(20) <<setprecision(1) << rs->getDouble("coef") << endl;
 	}
 }
+

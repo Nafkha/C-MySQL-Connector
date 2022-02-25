@@ -28,10 +28,7 @@ public:
 	static void ajouterGroupeModule(string idGM, string nomGM, double coefGM,string gp);
 	static void ajouterGroupe(string idGRP, string niveau, string diplome, string specialite, int num_g);
 	static void ajouterNote(int idEtu, string idMat, double note, string type);
-	static sql::ResultSet* fetchGroup();
-	static sql::ResultSet* fetchNotes(string idMat);
 	static sql::ResultSet* fetchMoyMat(string idMat, int idEtu);
-	static sql::ResultSet* fetchMoyGM(int id, string idGM);
 	static sql::ResultSet* fetchMatieres(string idGM);
 	static sql::ResultSet* fetchMatierById(string idM);
 	static sql::ResultSet* fetchMatiereByEns(int cnss);

@@ -89,6 +89,7 @@ void databaseConnection::ajouterMatiere(string idMat, string nomMat,string gm, d
 	try
 	{
 		pstmt->execute();
+		cout << "Matiere ajoutee" << endl;
 	}
 	catch (sql::SQLException e)
 	{
@@ -140,45 +141,6 @@ void databaseConnection::ajouterGroupe(string idGRP, string niveau, string diplo
 		cout << "Erreur d'insertion dans la table GROUPE  : " << e.what() << endl;
 	}
 	delete pstmt;
-}
-sql::ResultSet* databaseConnection::fetchGroup()
-{
-	sql::ResultSet* rs;
-	sql::PreparedStatement *pstmt;
-	con->setSchema("projetcpp");
-	pstmt = con->prepareStatement("SELECT * FROM groupe where idGrp = ?");
-	pstmt->setString(1, "IRM");
-	try{
-		rs = pstmt->executeQuery();
-	cout << "SUCCESS"<<endl;
-	}catch (sql::SQLException e)
-	{
-		cout << "Erreur : " << e.what() << endl;
-		exit(1);
-	}
-	delete pstmt;
-	return rs;
-
-}
-sql::ResultSet* databaseConnection::fetchNotes(string idMat)
-{
-	sql::ResultSet* rs;
-	sql::PreparedStatement* pstmt;
-	con->setSchema("projetcpp");
-	pstmt = con->prepareStatement("SELECT * FROM NOTE WHERE mat=?");
-	pstmt->setString(1, idMat);
-	try
-	{
-		rs = pstmt->executeQuery();
-	}
-	catch (sql::SQLException e)
-	{
-		cout << "Erreur : " << e.what() << endl;
-		exit(1);
-	}
-	delete pstmt;
-	return rs;
-
 }
 sql::ResultSet* databaseConnection::fetchEtudiants(string id)
 {
@@ -402,24 +364,6 @@ sql::ResultSet* databaseConnection::fetchMoyMat(string idMat, int idEtu)
 		cout << "Error : " << e.what()<<endl;
 	}
 	
-}
-sql::ResultSet* databaseConnection::fetchMoyGM(int id, string idGM)
-{
-	sql::PreparedStatement* pstmt;
-	sql::ResultSet* rs;
-	con->setSchema("projetcpp");
-	pstmt = con->prepareStatement("SELECT avg(Note) from note n join matiere m on n.Mat=m.idMat join groupemodule g on m.gm=g.idGM where (n.Etu = ? and m.gm=?)");
-	pstmt->setInt(1, id);
-	pstmt->setString(2, idGM);
-	try
-	{
-		rs = pstmt->executeQuery();
-		return rs;
-	}
-	catch (sql::SQLException e)
-	{
-		cout << "Erreur : " << e.what() << endl;
-	}
 }
 sql::ResultSet* databaseConnection::listeEtudiantsByGrp(string idGrp)
 {

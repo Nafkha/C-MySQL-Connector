@@ -11,7 +11,7 @@ private:
 	string nomGM;
 	double coefGM;
 	vector<Matiere> listeMat;
-	vector<Note> listeNote;
+
 
 public:
 	GroupeModule(string id_gm, string nom_gm, double coef_gm,string gp)
@@ -64,10 +64,7 @@ public:
 	{
 		listeMat.push_back(m);
 	}
-	void ajouterNote(Note n)
-	{
-		listeNote.push_back(n);
-	}
+	
 	
 	
 
