@@ -275,23 +275,93 @@ void databaseConnection::ajouterNote(int idEtu, string idMat, double note, strin
 
 
 }
-void databaseConnection::deleteStudent(int id)
+void databaseConnection::updateStudent(int num_insc,string grp)
 {
 	sql::PreparedStatement* pstmt;
 	con->setSchema("projetcpp");
-	pstmt = con->prepareStatement("Delete from personne where id=?");
-	pstmt->setInt(1, id);
+	pstmt = con->prepareStatement("update etudiant set grp=? where num_insc = ? ");
+	pstmt->setInt(2, num_insc);
+	pstmt->setString(1, grp);
 	try
 	{
 		pstmt->execute();
 	}
 	catch (sql::SQLException e)
 	{
-		cout << "Erreur de supression : " << e.what() << endl;
+		cout << "Erreur de modification : " << e.what() << endl;
 	}
 	delete pstmt;
 	
 }
+void databaseConnection::updateMatiere(string idMat,double coef)
+{
+	sql::PreparedStatement* pstmt;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement("update matiere set coef = ? where idMat = ? ");
+	pstmt->setDouble(1, coef);
+	pstmt->setString(2, idMat);
+	try
+	{
+		pstmt->execute();
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur de modification : " << e.what() << endl;
+	}
+	delete pstmt;
+}
+
+void databaseConnection::deleteGroupeModule(string idGM)
+{
+	sql::PreparedStatement* pstmt;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement("delete from groupemodule where (idGM=?)");
+	pstmt->setString(1, idGM);
+	try
+	{
+		pstmt->execute();
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur de supression de groupe module : " << e.getErrorCode() << endl;
+	}
+	delete pstmt;
+}
+
+void databaseConnection::deleteMatiere(string idMat)
+{
+	sql::PreparedStatement* pstmt;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement("delete from matiere where (idMat=?)");
+	pstmt->setString(1, idMat);
+	try
+	{
+		pstmt->execute();
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur de supression de groupe module : " << e.getErrorCode() << endl;
+	}
+}
+void databaseConnection::deleteGroupe(string idGRP)
+{
+	sql::PreparedStatement* pstmt;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement("delete from groupe where (idGrp=?)");
+	pstmt->setString(1, idGRP);
+	try
+	{
+		pstmt->execute();
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur de supression de groupe : " << e.getErrorCode() << endl;
+	}
+	delete pstmt;
+}
+
+
+
 sql::ResultSet* databaseConnection::listeGroupesModules(string idG)
 {
 	sql::PreparedStatement* pstmt;
@@ -311,6 +381,26 @@ sql::ResultSet* databaseConnection::listeGroupesModules(string idG)
 
 	delete pstmt;
  }
+sql::ResultSet* databaseConnection::listeGM()
+{
+	sql::PreparedStatement* pstmt;
+	con->setSchema("projetcpp");
+	pstmt = con->prepareStatement("SELECT * FROM GROUPEMODULE");
+	try
+	{
+		sql::ResultSet* rs = pstmt->executeQuery();
+		return rs;
+
+	}
+	catch (sql::SQLException e)
+	{
+		cout << "Erreur : " << e.what() << endl;
+	}
+
+	delete pstmt;
+
+}
+
 sql::ResultSet* databaseConnection::fetchMatieres(string idGM)
 {
 	sql::PreparedStatement* pstmt;

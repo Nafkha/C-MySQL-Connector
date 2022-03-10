@@ -25,6 +25,13 @@ public:
 	}
 	GroupeModule() = default;
 
+	friend ostream& operator<<(ostream& flux,GroupeModule g)
+	{
+		flux << g.idGM << " " << g.nomGM << " " << g.idGM << endl;
+		
+		return flux;
+	}
+
 	string get_id_gm() const
 	{
 		return idGM;

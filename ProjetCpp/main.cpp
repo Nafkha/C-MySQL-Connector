@@ -54,12 +54,13 @@ int main()
 	cout << "0-Quitter le programme" << endl;
 	cout << "1-Ajouter un groupe" << endl;
 	cout << "2-Afficher les PV des groupes" << endl;
-	cout << "3-Menu Principale" << endl;
+	cout << "3-Supprimer un groupe" << endl;
+	cout << "4-Menu Principale" << endl;
 	do
 	{
 		cout << "Donner votre choix" << endl;
 		cin >> choice;
-	} while (choice < 0 || choice>3);
+	} while (choice < 0 || choice>4);
 	switch (choice)
 	{
 	case 0:
@@ -71,6 +72,9 @@ int main()
 		remplirGroupe();
 		goto Menu_Groupe;
 	case 3:
+		supprimerGroupe();
+		goto Menu_Groupe;
+	case 4:
 		goto Menu_Principale;
 	}
 
@@ -78,7 +82,7 @@ int main()
 	cout << "1-Ajouter un etudiant" << endl;
 	cout << "2-Afficher la liste des etudiants" << endl;
 	cout << "3-Afficher la liste des etudiants par groupe" << endl;
-	cout << "4-Supprimer un etudiant" << endl;
+	cout << "4-Modifier le groupe d'un etudiant" << endl;
 	cout << "5-Menu Principale" << endl;
 	do
 	{
@@ -99,7 +103,7 @@ int main()
 		afficherEtudiantsParGroupe();
 		goto Menu_Principale;
 	case 4 :
-		supprimerEtudiant();
+		modifierEtudiant();
 		goto Menu_Etudiants;
 	case 5:
 		goto Menu_Principale;
@@ -108,30 +112,27 @@ int main()
 	cout << "1-Ajouter un enseignant" << endl;
 	cout << "2-Afficher la liste des tous les enseignants" << endl;
 	cout << "3-Afficher la liste des matieres d'un enseignant" << endl;
-	cout << "4-Supprimer un enseingnat" << endl;
-	cout << "5-Menu Principale" << endl;
+	cout << "4-Menu Principale" << endl;
 	do
 	{
 		cout << "Donner votre choix" << endl;
 		cin >> choice;
-	} while (choice < 0 || choice>5);
+	} while (choice < 0 || choice>4);
 	switch (choice)
 	{
 	case 0:
 		exit(1);
 	case 1:
 		creationEnseignant();
-		goto Menu_Principale;
+		goto Menu_Enseignant;
 	case 2:
 		afficherListeEnseignant();
-		goto Menu_Principale;
+		goto Menu_Enseignant;
 	case 3:
 		affciherMatiereParEsneignant();
-		goto  Menu_Principale;
+		goto  Menu_Enseignant;
+
 	case 4:
-		cout << "Supprimer un enseignant" << endl;
-		goto Menu_Etudiants;
-	case 5:
 		goto Menu_Principale;
 	}
 	Menu_GroupeModule:
@@ -154,10 +155,10 @@ int main()
 		creationGroupeModule();
 		goto Menu_GroupeModule;
 	case 2:
-		cout << "Groupe Module" << endl;
+		afficherListeGroupeModule();
 		goto Menu_GroupeModule;
 	case 3:
-		cout << "Supprimer Groupe module" << endl;
+		supprimerGroupeModule();
 		goto Menu_GroupeModule;
 		
 	case 4:
@@ -182,7 +183,7 @@ int main()
 		creationMatiere();
 		goto Menu_Principale;
 	case 2 :
-		cout << "Supprimer une matiere" << endl;
+		supprimerMatiere();
 		goto Menu_Principale;
 	case 3:
 		cout << "Mettre a jour une matiere" << endl;
@@ -208,7 +209,7 @@ int main()
 		addNote();
 		goto Menu_Principale;
 	case 2:
-		cout << "Mise a jour" << endl;
+		modifierMatiere();
 		goto Menu_Principale;
 	case 3:
 		goto Menu_Principale;

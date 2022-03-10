@@ -37,9 +37,14 @@ public:
 	static sql::ResultSet* fetchEtudiants(string id);
 	static sql::ResultSet* fetchEtudiantById(int id);
 	static sql::ResultSet* fetchEnseignant(int cnss);
-	static void deleteStudent(int id);
+	static void updateStudent(int num_insc,string grp);
+	static void updateMatiere(string idMat,double coef);
+	static void deleteGroupeModule(string idGM);
+	static void deleteMatiere(string idMat);
+	static void deleteGroupe(string idGRP);
 	static sql::ResultSet* listeEnseignants();
 	static sql::ResultSet* listeGroupesModules(string idG);
+	static sql::ResultSet* listeGM();
 	static sql::ResultSet* listeEtudiantsByGrp(string idGrp);
 };
 

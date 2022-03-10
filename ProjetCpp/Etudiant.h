@@ -1,6 +1,7 @@
 #pragma once
 #include "databaseConnection.h"
 #include "Personne.h"
+#include <iomanip>
 //#include  "databaseConnection.h"
 class Etudiant:public Personne
 {
@@ -34,9 +35,11 @@ public:
 
 		return num_insc;
 	}
-	static void af()
+	friend ostream& operator<<(ostream& flux,const Etudiant& e)
 	{
-		cout << "hello world ";
+		flux << setw(9) << left << e.num_insc << '|' << setw(30) <<e.nom << '|' << setw(30) << e.prenom <<'|'<<setw(30)<<e.mail<< endl;
+		return  flux;
+
 	}
 };
 

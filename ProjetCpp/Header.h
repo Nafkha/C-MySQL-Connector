@@ -12,7 +12,10 @@
 using namespace std;
 void creationEtudiant(); //Créer un étudiant;
 void afficherListeEtudiants(); 
-void supprimerEtudiant();
+void modifierEtudiant();
+void supprimerGroupeModule();
+void supprimerMatiere();
+void supprimerGroupe();
 void creationGroupe(); // Créer un groupe
 void afficherListeGroupe();
 void creationEnseignant(); //Créer un enseignant
@@ -29,5 +32,6 @@ void afficherGroupe(Groupe gp);
 string testAdmission(double moy);
 string testMention(double moy);
 void affciherMatiereParEsneignant();
+void modifierMatiere();
 
 

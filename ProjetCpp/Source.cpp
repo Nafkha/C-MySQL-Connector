@@ -26,18 +26,54 @@ void afficherListeEtudiants()
 	int colwidth = 30;
 	sql::ResultSet* rs = databaseConnection::listeEtudiants();
 	//cout << "ID" << setw(5) << "Nom" << setw(10) << "Prenom" << setw(5) << endl;
-	cout <<setw(7)<<left << "ID" << '|' << setw(colwidth) << "Nom" << '|' << setw(colwidth) << "Prenom"  << endl;
+	cout <<setw(9)<<left << "NUM_INSC" << '|' << setw(colwidth) << "Nom" << '|' << setw(colwidth) << "Prenom" <<'|'<<setw(colwidth)<<"Email" << endl;
 	while (rs->next())
 	{
-		cout <<setw(7)<<left << rs->getInt("id") << '|' << setw(colwidth) << rs->getString("nom") << '|' << setw(colwidth) << rs->getString("prenom")  << endl;
-	}
+		//cout << rs->getString("idGRP")<<endl;
+		Etudiant e(rs->getInt("id"), rs->getString("nom"), rs->getString("prenom"), rs->getString("mail"), rs->getInt("num_insc"), rs->getString("grp"), false);
+		//cout <<setw(7)<<left << rs->getInt("id") << '|' << setw(colwidth) << rs->getString("nom") << '|' << setw(colwidth) << rs->getString("prenom")  << endl;
+		cout << e;
+	}	
 }
-void supprimerEtudiant()
+void modifierEtudiant()
 {
-	int idEtu;
-	cout << "Donner l'id d'etudiant " << endl;
-	cin >> idEtu;
-	databaseConnection::deleteStudent(idEtu);
+	int numInsc;
+	string grp;
+	cout << "Donner le numero d'inscription " << endl;
+	cin >> numInsc;
+	cout << "Donner le nouveau groupe " << endl;
+	cin >> grp;
+	databaseConnection::updateStudent(numInsc,grp);
+}
+void supprimerGroupeModule()
+{
+	string idGM;
+	cout << "Donner l'id de groupe module a supprimer" << endl;
+	cin >> idGM;
+	databaseConnection::deleteGroupeModule(idGM);
+}
+void supprimerMatiere()
+{
+	string idMat;
+	cout << "Donner l'id de matiere a supprimer" << endl;
+	cin >> idMat;
+	databaseConnection::deleteMatiere(idMat);
+}
+void supprimerGroupe()
+{
+	char c;
+	do
+	{
+		cout << "Est-ce-que vous avez met a jour les groupes des etudiants ? (O/N) : ";
+		cin >> c;
+	}
+	while (c!='O' && c!='o' && c!='N' && c!='n');
+	if(c=='O' || c=='o'){
+	string idGRP;
+	cout << "Donner l'id de groupe a supprimer : ";
+	cin >> idGRP;
+	databaseConnection::deleteGroupe(idGRP);
+	}
 }
 void creationGroupe()
 {
@@ -69,6 +105,18 @@ void afficherListeGroupe()
 		<< rs->getString("diplome")<<setprecision(4)<<setw(colwidth)<<rs->getString("specialite")<<setprecision(4)<<
 			setw(colwidth)<<rs->getInt("num_g") << endl;
 	}
+}
+void  afficherListeGroupeModule()
+{
+	sql::ResultSet* rs;
+	rs = databaseConnection::listeGM();
+	int colwidth = 20;
+	cout << setw(colwidth)<<internal<< "ID Groupe Module " << setw(45) << internal << "Groupe Module" << setw(colwidth) << internal << "Coeffecient"  << endl;
+	while(rs->next())
+	{
+		cout << setw(colwidth)<<left << rs->getString("idGM") << setw(45) << internal << rs->getString("nomGM") << setprecision(2) << setw(colwidth) << internal << rs->getString("coefGM") << endl;
+	}
+
 }
 void creationEnseignant()
 {
@@ -109,7 +157,7 @@ void creationGroupeModule()
 	getline(cin, nom);
 	cout << "Donner la coeffecient : ";
 	cin >> coef;
-	cout << "Donner le groupe : " << endl;
+	cout << "Donner le groupe : ";
 	cin.ignore();
 
 	getline(cin, gp);
@@ -128,7 +176,7 @@ void creationMatiere()
 	getline(cin, nom);
 	cout << "Donner le groupe module de la matiere : ";
 	getline(cin, gm);
-	cout << "Donner la coeffecience : ";
+	cout << "Donner la coeffecient : ";
 	cin >> coef;
 
 	cout << "Donner l'ID de l'enseignant : ";
@@ -146,6 +194,18 @@ void creationMatiere()
 	}
 	
 }
+void modifierMatiere()
+{
+	string idMat;
+	double newCef;
+	cout << "Donner l'id de matiere : ";
+	cin >> idMat;
+	cout << "Donner la nouveau coeffecient : ";
+	cin >> newCef;
+	databaseConnection::updateMatiere(idMat, newCef);
+	
+}
+
 void remplirGroupe()
 {
 	sql::ResultSet* rs;
@@ -193,7 +253,6 @@ void remplirGroupe()
 				}
 			}
 
-			cout << "Nombre de matieres : " << gm.get_liste_mat().size() << endl;
 			listeGrp.at(i).addGM(gm);
 			
 		}
@@ -204,6 +263,7 @@ void remplirGroupe()
 	for (int i = 0;i<listeGrp.size();i++)
 	{
 		afficherGroupe(listeGrp.at(i));
+		cout << endl;
 	}
 	cout << endl;
 }
@@ -291,6 +351,10 @@ string testAdmission(double moy)
 }
 string testMention(double moy)
 {
+	if(moy<10)
+	{
+		return "";
+	}
 	if(moy>=10 && moy<12)
 	{
 		return "Passable";
@@ -314,12 +378,20 @@ void afficherGroupe(Groupe gp)
 	int colwidth = 10;
 	vector<GroupeModule> listModule = gp.getListModule();
 	if(gp.getListModule().size()>0){
+		cout << setw(100) << internal << gp.get_id_grp() << " " << gp.get_diplome() << endl;
 	cout << setfill(' ') <<left<< setw(60)<<" ";
 	for (int i = 0;i < gp.getListModule().size();i++) {
 		cout<<setprecision(0) << setfill(' ') << setw(colwidth * (gp.getListModule().at(i).get_liste_mat().size()+1)+ gp.getListModule().at(i).get_liste_mat().size()) << gp.getListModule().at(i).get_nom_gm() << "|";
 	}
 	cout << setw(colwidth) << "Moyenne" << '|' << setw(colwidth) << "Resultat" << '|' << setw(colwidth) << "Mention" << '|';
 	cout << endl;
+	cout << setfill(' ') << left << setw(60) << " ";
+
+	for (int i = 0;i < gp.getListModule().size();i++) {
+		cout << setprecision(0) << setfill(' ') << setw(colwidth * (gp.getListModule().at(i).get_liste_mat().size() + 1) + gp.getListModule().at(i).get_liste_mat().size()) << gp.getListModule().at(i).get_coef_gm() << "|";
+	}
+	cout << endl;
+
 	cout << setfill(' ') << left << setw(60) << " ";
 
 	for(int i=0;i<gp.getListModule().size();i++)
@@ -380,11 +452,7 @@ void afficherGroupe(Groupe gp)
 		cout << setprecision(2) << setfill(' ') << setw(colwidth) << moy << '|' << setw(colwidth)<< testAdmission(moy) << '|'<< setw(colwidth) << testMention(moy) << '|';
 		cout << endl;
 	}
-	}else
-	{
-		cout << "Veuillez remplir le groupe ... " << endl;
 	}
-
 	
 }
 void afficherEtudiantsParGroupe()
